@@ -21,7 +21,34 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'avatar', // ✅ this line!
     ];
+    public function favoriteBooks()
+    {
+        return $this->belongsToMany(Book::class, 'book_user_favorites')->withTimestamps();
+
+    }
+    public function books_read()
+    {
+        return $this->belongsToMany(\App\Models\Book::class, 'book_user_reads')
+                    ->withPivot('last_page')
+                    ->withTimestamps();
+    }
+    public function bookReviews()
+    {
+        return $this->belongsToMany(Book::class, 'book_user_reviews')
+                    ->withPivot('rating')
+                    ->withTimestamps();
+    }
+    public function ratings()
+    {
+        return $this->hasMany(\App\Models\Rating::class);
+    }
+
+
+    
+    
 
     /**
      * The attributes that should be hidden for serialization.
