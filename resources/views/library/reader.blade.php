@@ -1,70 +1,92 @@
 <audio id="flip-sound" src="{{ asset('sounds/page-flip.mp3') }}"></audio>
 
 <x-app-layout>
-    <div>
-        <h2>
-            Leesmodus
+    <div class="min-h-screen bg-gradient-to-r from-purple-100 via-blue-100 to-pink-100 py-12 px-4">
+        <h2 class="text-4xl font-extrabold text-center text-indigo-700 drop-shadow mb-8">
+            📖 Leesmodus
         </h2>
 
-        <a href="{{ route('library.index') }}">
-            teruggaan
+
+        <!-- 🔙 Floating Back Button -->
+        <a href="{{ route('library.index') }}"
+        class="fixed top-5 left-5 z-50 bg-white/90 text-indigo-700 font-semibold px-4 py-2 rounded-full shadow-lg border border-indigo-300 hover:bg-indigo-100 transition-transform hover:scale-105 hover:shadow-xl flex items-center gap-2">
+        <span class="animate-bounce">🔙</span> teruggaan
         </a>
 
-        <div>
-            <!-- Book Cover -->
-            <div>
-                <img src="{{ asset('storage/' . $book->cover_image) }}" alt="Book Cover" />
-                <p>{{ $book->title }}</p>
-            </div>
 
-            <!-- PDF & Controls -->
-            <div>
-                <canvas id="pdf-canvas"></canvas>
+        <div class="max-w-5xl mx-auto flex flex-col md:flex-row gap-6 items-start">
+    <!-- Book Cover on the left -->
+    <div class="hidden md:block w-32 flex-shrink-0">
+        <img src="{{ asset('storage/' . $book->cover_image) }}" alt="Book Cover"
+             class="rounded-lg shadow-md border border-indigo-200" />
+        <p class="text-center text-xs text-gray-500 mt-2">📘 {{ $book->title }}</p>
+    </div>
 
-                <div>
-                    <button id="prev">Vorige</button>
+    <!-- PDF & Controls on the right -->
+    <div class="flex-1 flex flex-col items-center">
+        
+        <!-- PDF Canvas -->
+        <canvas id="pdf-canvas" class="rounded-xl shadow-2xl border-4 border-indigo-300 mb-6"></canvas>
 
-                    <span id="page-info"></span>
+        <!-- Controls -->
+        <div class="flex items-center justify-between w-full max-w-md mb-4">
+            <button id="prev" class="bg-indigo-600 text-white px-4 py-2 rounded-lg shadow hover:bg-indigo-700 transition">
+                ⬅ Vorige
+            </button>
 
-                    <button id="next">Volgende</button>
+            <span id="page-info" class="text-indigo-800 font-semibold text-lg"></span>
+
+            <button id="next" class="bg-indigo-600 text-white px-4 py-2 rounded-lg shadow hover:bg-indigo-700 transition">
+                Volgende ➡
+            </button>
+        </div>
+
+        <!-- Rating Form -->
+        @if(Auth::user()->role === 'student')
+            <form method="POST" action="{{ route('books.rate', $book) }}" class="mt-8 text-center">
+                @csrf
+                <label class="block text-lg font-semibold text-indigo-800 mb-2"> Geef je beoordeling</label>
+
+                <div class="inline-flex items-center gap-2">
+                    @for($i = 1; $i <= 5; $i++)
+                        <label>
+                            <input type="radio" name="rating" value="{{ $i }}" class="hidden" onchange="this.form.submit()" />
+                            <span class="text-3xl cursor-pointer hover:scale-110 transition transform duration-200">⭐</span>
+                        </label>
+                    @endfor
                 </div>
 
-                @if(Auth::user()->role === 'student')
-                    <form method="POST" action="{{ route('books.rate', $book) }}">
-                        @csrf
-                        <label>Geef je beoordeling</label>
-                        <div>
-                            @for($i = 1; $i <= 5; $i++)
-                                <label>
-                                    <input type="radio" name="rating" value="{{ $i }}" onchange="this.form.submit()" />
-                                    <span>*</span>
-                                </label>
-                            @endfor
-                        </div>
-                        <p>Klik op het aantal sterren dat je wilt geven</p>
-                    </form>
-                @endif
+                <p class="text-sm text-gray-500 mt-2">Klik op het aantal sterren dat je wilt geven</p>
+            </form>
+        @endif
 
-                <button id="bookmark">
-                    Voeg deze pagina toe aan je bladwijzers
+        <!-- Bookmark -->
+        <button id="bookmark" class="mt-6 bg-yellow-400 hover:bg-yellow-500 text-white font-bold px-6 py-2 rounded-lg shadow transition">
+                    🔖 Voeg deze pagina toe aan je bladwijzers
                 </button>
             </div>
         </div>
 
+
         <!-- Notes Panel -->
-        <div id="notesPanel" class="hidden">
-            <h3>Notities</h3>
-            <div id="notesList"></div>
+        <div id="notesPanel" class="fixed right-0 top-20 bg-white/90 shadow-xl rounded-l-xl w-72 h-[85vh] p-4 overflow-y-auto border-l-4 border-yellow-400 hidden z-50">
+            <h3 class="text-xl font-bold text-indigo-700 mb-4 flex items-center gap-2">
+                📝 Notities
+            </h3>
+            <div id="notesList" class="space-y-2 text-sm text-gray-700"></div>
         </div>
 
-        <button id="toggleNotes">
-            Notities
+        <!-- Toggle Notes Button -->
+        <button id="toggleNotes"
+            class="fixed right-4 top-4 bg-yellow-400 text-white px-3 py-2 rounded-full shadow-lg hover:bg-yellow-500 transition z-50">
+            📝 Notities
         </button>
 
         <script>
             const savedNotes = @json($notes);
         </script>
 
+        <!-- PDF.js -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
 
         <style>
@@ -79,6 +101,14 @@
             .flip-left {
                 animation: flip 0.6s forwards;
             }
+            .animate-bounce {
+            animation: bounce 1.2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
 
             @keyframes flip {
                 0% { transform: rotateY(0deg); }
@@ -129,7 +159,7 @@
             document.getElementById("next").addEventListener("click", () => flipPage('next'));
             document.getElementById("prev").addEventListener("click", () => flipPage('prev'));
             document.getElementById("bookmark").addEventListener("click", () => {
-                alert(`Bookmarked Page ${pageNum}`);
+                alert(`🔖 Bookmarked Page ${pageNum}`);
             });
 
             loadPDF();
@@ -147,9 +177,10 @@
 
             function addNote(content = "", page = pageNum) {
                 const note = document.createElement("div");
+                note.className = "p-2 bg-yellow-100 border-l-4 border-yellow-400 rounded shadow";
                 note.innerHTML = `
-                    <strong>Page ${page}</strong>
-                    <textarea>${content}</textarea>
+                    <strong>📄 Page ${page}</strong>
+                    <textarea class="w-full mt-1 text-sm p-1 rounded border border-gray-300 bg-white">${content}</textarea>
                 `;
                 notesList.appendChild(note);
             }
@@ -158,15 +189,18 @@
                 savedNotes.forEach(note => addNote(note.content, note.page));
             }
 
-            // Add Note Button
+            // Add "Add Note" Button
             document.getElementById("bookmark").insertAdjacentHTML("afterend", `
-                <button id="addNote">Notitie voor pagina toevoegen</button>
+                <button id="addNote" class="mt-4 bg-indigo-400 hover:bg-indigo-500 text-white font-bold px-4 py-2 rounded shadow transition">
+                    ➕ Notitie voor pagina toevoegen
+                </button>
             `);
 
             document.getElementById("addNote").addEventListener("click", () => {
                 addNote();
             });
 
+            // Save Notes to Server (debounced)
             function saveNotesToServer() {
                 const allNotes = [];
                 document.querySelectorAll("#notesList textarea").forEach(textarea => {
@@ -198,7 +232,7 @@
                 }, 800);
             });
 
+            // Load existing notes
             loadNotesFromDatabase();
         </script>
-    </div>
-</x-app-layout>
+    </x-app-layout>
