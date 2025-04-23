@@ -24,6 +24,7 @@
 
     <!-- PDF & Controls on the right -->
     <div class="flex-1 flex flex-col items-center">
+        
         <!-- PDF Canvas -->
         <canvas id="pdf-canvas" class="rounded-xl shadow-2xl border-4 border-indigo-300 mb-6"></canvas>
 
@@ -61,177 +62,177 @@
 
         <!-- Bookmark -->
         <button id="bookmark" class="mt-6 bg-yellow-400 hover:bg-yellow-500 text-white font-bold px-6 py-2 rounded-lg shadow transition">
-            🔖 Voeg deze pagina toe aan je bladwijzers
-        </button>
-    </div>
-</div>
+                    🔖 Voeg deze pagina toe aan je bladwijzers
+                </button>
+            </div>
+        </div>
 
 
-    <!-- Notes Panel -->
-    <div id="notesPanel" class="fixed right-0 top-20 bg-white/90 shadow-xl rounded-l-xl w-72 h-[85vh] p-4 overflow-y-auto border-l-4 border-yellow-400 hidden z-50">
-        <h3 class="text-xl font-bold text-indigo-700 mb-4 flex items-center gap-2">
+        <!-- Notes Panel -->
+        <div id="notesPanel" class="fixed right-0 top-20 bg-white/90 shadow-xl rounded-l-xl w-72 h-[85vh] p-4 overflow-y-auto border-l-4 border-yellow-400 hidden z-50">
+            <h3 class="text-xl font-bold text-indigo-700 mb-4 flex items-center gap-2">
+                📝 Notities
+            </h3>
+            <div id="notesList" class="space-y-2 text-sm text-gray-700"></div>
+        </div>
+
+        <!-- Toggle Notes Button -->
+        <button id="toggleNotes"
+            class="fixed right-4 top-4 bg-yellow-400 text-white px-3 py-2 rounded-full shadow-lg hover:bg-yellow-500 transition z-50">
             📝 Notities
-        </h3>
-        <div id="notesList" class="space-y-2 text-sm text-gray-700"></div>
-    </div>
+        </button>
 
-    <!-- Toggle Notes Button -->
-    <button id="toggleNotes"
-        class="fixed right-4 top-4 bg-yellow-400 text-white px-3 py-2 rounded-full shadow-lg hover:bg-yellow-500 transition z-50">
-        📝 Notities
-    </button>
+        <script>
+            const savedNotes = @json($notes);
+        </script>
 
-    <script>
-        const savedNotes = @json($notes);
-    </script>
+        <!-- PDF.js -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
 
-    <!-- PDF.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+        <style>
+            #pdf-canvas {
+                transition: transform 0.6s ease-in-out;
+                transform-origin: center center;
+                backface-visibility: hidden;
+                transform-style: preserve-3d;
+                perspective: 1200px;
+            }
 
-    <style>
-        #pdf-canvas {
-            transition: transform 0.6s ease-in-out;
-            transform-origin: center center;
-            backface-visibility: hidden;
-            transform-style: preserve-3d;
-            perspective: 1200px;
+            .flip-left {
+                animation: flip 0.6s forwards;
+            }
+            .animate-bounce {
+            animation: bounce 1.2s infinite;
         }
 
-        .flip-left {
-            animation: flip 0.6s forwards;
-        }
-        .animate-bounce {
-        animation: bounce 1.2s infinite;
-    }
-
-    @keyframes bounce {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-4px); }
-    }
-
-        @keyframes flip {
-            0% { transform: rotateY(0deg); }
-            100% { transform: rotateY(-180deg); }
-        }
-    </style>
-
-    <script>
-        const url = "{{ asset('storage/' . $book->pdf_file) }}";
-        let pdfDoc = null,
-            pageNum = 1,
-            canvas = document.getElementById("pdf-canvas"),
-            ctx = canvas.getContext('2d'),
-            flipSound = document.getElementById("flip-sound");
-
-        const renderPage = num => {
-            pdfDoc.getPage(num).then(page => {
-                const viewport = page.getViewport({ scale: 1.5 });
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
-                page.render({ canvasContext: ctx, viewport });
-                document.getElementById("page-info").textContent = `Page ${pageNum} of ${pdfDoc.numPages}`;
-            });
-        };
-
-        const loadPDF = () => {
-            pdfjsLib.getDocument(url).promise.then(pdf => {
-                pdfDoc = pdf;
-                renderPage(pageNum);
-            });
-        };
-
-        function flipPage(direction) {
-            if ((direction === 'next' && pageNum >= pdfDoc.numPages) ||
-                (direction === 'prev' && pageNum <= 1)) return;
-
-            flipSound.currentTime = 0;
-            flipSound.play();
-
-            canvas.classList.add("flip-left");
-            setTimeout(() => {
-                pageNum += (direction === 'next') ? 1 : -1;
-                renderPage(pageNum);
-                canvas.classList.remove("flip-left");
-            }, 600);
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
         }
 
-        document.getElementById("next").addEventListener("click", () => flipPage('next'));
-        document.getElementById("prev").addEventListener("click", () => flipPage('prev'));
-        document.getElementById("bookmark").addEventListener("click", () => {
-            alert(`🔖 Bookmarked Page ${pageNum}`);
-        });
+            @keyframes flip {
+                0% { transform: rotateY(0deg); }
+                100% { transform: rotateY(-180deg); }
+            }
+        </style>
 
-        loadPDF();
-    </script>
+        <script>
+            const url = "{{ asset('storage/' . $book->pdf_file) }}";
+            let pdfDoc = null,
+                pageNum = 1,
+                canvas = document.getElementById("pdf-canvas"),
+                ctx = canvas.getContext('2d'),
+                flipSound = document.getElementById("flip-sound");
 
-    <!-- Sticky Notes -->
-    <script>
-        const notesPanel = document.getElementById("notesPanel");
-        const toggleNotes = document.getElementById("toggleNotes");
-        const notesList = document.getElementById("notesList");
-
-        toggleNotes.addEventListener("click", () => {
-            notesPanel.classList.toggle("hidden");
-        });
-
-        function addNote(content = "", page = pageNum) {
-            const note = document.createElement("div");
-            note.className = "p-2 bg-yellow-100 border-l-4 border-yellow-400 rounded shadow";
-            note.innerHTML = `
-                <strong>📄 Page ${page}</strong>
-                <textarea class="w-full mt-1 text-sm p-1 rounded border border-gray-300 bg-white">${content}</textarea>
-            `;
-            notesList.appendChild(note);
-        }
-
-        function loadNotesFromDatabase() {
-            savedNotes.forEach(note => addNote(note.content, note.page));
-        }
-
-        // Add "Add Note" Button
-        document.getElementById("bookmark").insertAdjacentHTML("afterend", `
-            <button id="addNote" class="mt-4 bg-indigo-400 hover:bg-indigo-500 text-white font-bold px-4 py-2 rounded shadow transition">
-                ➕ Notitie voor pagina toevoegen
-            </button>
-        `);
-
-        document.getElementById("addNote").addEventListener("click", () => {
-            addNote();
-        });
-
-        // Save Notes to Server (debounced)
-        function saveNotesToServer() {
-            const allNotes = [];
-            document.querySelectorAll("#notesList textarea").forEach(textarea => {
-                const page = textarea.closest("div").querySelector("strong")?.innerText?.match(/\d+/)?.[0] || 1;
-                allNotes.push({ page, content: textarea.value });
-            });
-
-            allNotes.forEach(note => {
-                fetch("/notes", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRF-TOKEN": '{{ csrf_token() }}',
-                    },
-                    body: JSON.stringify({
-                        book_id: {{ $book->id }},
-                        page: note.page,
-                        content: note.content
-                    })
+            const renderPage = num => {
+                pdfDoc.getPage(num).then(page => {
+                    const viewport = page.getViewport({ scale: 1.5 });
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+                    page.render({ canvasContext: ctx, viewport });
+                    document.getElementById("page-info").textContent = `Page ${pageNum} of ${pdfDoc.numPages}`;
                 });
+            };
+
+            const loadPDF = () => {
+                pdfjsLib.getDocument(url).promise.then(pdf => {
+                    pdfDoc = pdf;
+                    renderPage(pageNum);
+                });
+            };
+
+            function flipPage(direction) {
+                if ((direction === 'next' && pageNum >= pdfDoc.numPages) ||
+                    (direction === 'prev' && pageNum <= 1)) return;
+
+                flipSound.currentTime = 0;
+                flipSound.play();
+
+                canvas.classList.add("flip-left");
+                setTimeout(() => {
+                    pageNum += (direction === 'next') ? 1 : -1;
+                    renderPage(pageNum);
+                    canvas.classList.remove("flip-left");
+                }, 600);
+            }
+
+            document.getElementById("next").addEventListener("click", () => flipPage('next'));
+            document.getElementById("prev").addEventListener("click", () => flipPage('prev'));
+            document.getElementById("bookmark").addEventListener("click", () => {
+                alert(`🔖 Bookmarked Page ${pageNum}`);
             });
-        }
 
-        let typingTimer;
-        notesList.addEventListener("input", () => {
-            clearTimeout(typingTimer);
-            typingTimer = setTimeout(() => {
-                saveNotesToServer();
-            }, 800);
-        });
+            loadPDF();
+        </script>
 
-        // Load existing notes
-        loadNotesFromDatabase();
-    </script>
-</x-app-layout>
+        <!-- Sticky Notes -->
+        <script>
+            const notesPanel = document.getElementById("notesPanel");
+            const toggleNotes = document.getElementById("toggleNotes");
+            const notesList = document.getElementById("notesList");
+
+            toggleNotes.addEventListener("click", () => {
+                notesPanel.classList.toggle("hidden");
+            });
+
+            function addNote(content = "", page = pageNum) {
+                const note = document.createElement("div");
+                note.className = "p-2 bg-yellow-100 border-l-4 border-yellow-400 rounded shadow";
+                note.innerHTML = `
+                    <strong>📄 Page ${page}</strong>
+                    <textarea class="w-full mt-1 text-sm p-1 rounded border border-gray-300 bg-white">${content}</textarea>
+                `;
+                notesList.appendChild(note);
+            }
+
+            function loadNotesFromDatabase() {
+                savedNotes.forEach(note => addNote(note.content, note.page));
+            }
+
+            // Add "Add Note" Button
+            document.getElementById("bookmark").insertAdjacentHTML("afterend", `
+                <button id="addNote" class="mt-4 bg-indigo-400 hover:bg-indigo-500 text-white font-bold px-4 py-2 rounded shadow transition">
+                    ➕ Notitie voor pagina toevoegen
+                </button>
+            `);
+
+            document.getElementById("addNote").addEventListener("click", () => {
+                addNote();
+            });
+
+            // Save Notes to Server (debounced)
+            function saveNotesToServer() {
+                const allNotes = [];
+                document.querySelectorAll("#notesList textarea").forEach(textarea => {
+                    const page = textarea.closest("div").querySelector("strong")?.innerText?.match(/\d+/)?.[0] || 1;
+                    allNotes.push({ page, content: textarea.value });
+                });
+
+                allNotes.forEach(note => {
+                    fetch("/notes", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": '{{ csrf_token() }}',
+                        },
+                        body: JSON.stringify({
+                            book_id: {{ $book->id }},
+                            page: note.page,
+                            content: note.content
+                        })
+                    });
+                });
+            }
+
+            let typingTimer;
+            notesList.addEventListener("input", () => {
+                clearTimeout(typingTimer);
+                typingTimer = setTimeout(() => {
+                    saveNotesToServer();
+                }, 800);
+            });
+
+            // Load existing notes
+            loadNotesFromDatabase();
+        </script>
+    </x-app-layout>
