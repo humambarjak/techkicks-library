@@ -23,9 +23,10 @@
             @endif
 
             <div class="relative z-10">
-                <h1 class="text-3xl sm:text-4xl font-extrabold text-indigo-700 mb-2 {{ Auth::user()->role === 'student' ? 'typing' : 'glow-text' }}">
-                    👋 Welkom terug, {{ Auth::user()->name }}
-                </h1>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-indigo-700 mb-2 {{ Auth::user()->role === 'student' ? 'typing' : 'glow-text' }}">
+                <span class="wave-emoji">👋</span> Welkom, {{ Auth::user()->name }}
+            </h1>
+
                 <p class="text-lg text-gray-600 mb-6">
                     <span class="text-sm text-gray-400">({{ ucfirst(Auth::user()->role) }})</span>
                 </p>
@@ -124,6 +125,23 @@
             10% { opacity: 1; }
             100% { transform: translateY(-120%); opacity: 0; }
         }
+        @keyframes wave {
+        0% { transform: rotate(0deg); }
+        15% { transform: rotate(14deg); }
+        30% { transform: rotate(-8deg); }
+        40% { transform: rotate(14deg); }
+        50% { transform: rotate(-4deg); }
+        60% { transform: rotate(10deg); }
+        70% { transform: rotate(0deg); }
+        100% { transform: rotate(0deg); }
+        }
+
+        .wave-emoji {
+        display: inline-block;
+        animation: wave 2.2s ease-in-out infinite;
+        transform-origin: 70% 70%;
+        }
+
     </style>
 
     <script>

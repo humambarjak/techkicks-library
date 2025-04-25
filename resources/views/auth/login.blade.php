@@ -45,7 +45,7 @@
                 <!-- Submit -->
                 <button type="submit"
                     class="w-full flex justify-center items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg shadow transition transform hover:scale-105">
-                    ✨ Inloggen
+                     Inloggen
                 </button>
             </form>
 

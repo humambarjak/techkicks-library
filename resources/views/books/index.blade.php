@@ -1,64 +1,65 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="text-xl font-bold text-indigo-800 leading-tight text-center">
+        <h2 class="text-3xl font-extrabold text-indigo-800 text-center mt-4 animate-bounce-in glow-text">
             📘 Mijn geüploade boeken
         </h2>
     </x-slot>
-    <br>
-    <div class="max-w-6xl mx-auto bg-white rounded-3xl shadow-xl p-6">
-        <div class="flex justify-between items-center mb-6">
-            <h3 class="text-2xl font-semibold text-indigo-700">📚 Boekenlijst</h3>
-            <a href="{{ route('books.create') }}"
-            class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-200 shadow-md">
-                + Nieuw boek uploaden
-            </a>
-        </div>
 
-    @if($books->count())
-                <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+    <div class="min-h-screen from-blue-50 via-purple-50 to-pink-50 py-10 px-6">
+        <div class="max-w-6xl mx-auto bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl p-8">
+            <div class="flex justify-between items-center mb-8">
+                <h3 class="text-2xl font-bold text-indigo-700 animate-fade-in">
+                    📚 Boekenlijst
+                </h3>
+                <a href="{{ route('books.create') }}"
+                   class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold py-2 px-5 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition">
+                    + Nieuw boek uploaden
+                </a>
+            </div>
+
+            @if($books->count())
+                <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-6 animate-fade-in-slow">
                     @foreach($books as $book)
-                        <div class="bg-white border border-indigo-100 rounded-2xl p-4 shadow-md hover:shadow-lg transition transform hover:-translate-y-1 relative">
-                        @if($book->is_special)
-                        <span class="absolute top-2 left-2 bg-purple-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow">
-                            ✨ Speciaal
-                        </span>
-                    @endif
+                        <div class="relative bg-white border border-indigo-100 rounded-2xl p-4 shadow-xl hover:shadow-2xl transition-transform transform hover:-translate-y-1 duration-300 book-card">
+                            @if($book->is_special)
+                                <span class="absolute top-2 left-2 bg-purple-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow animate-pulse">
+                                    ✨ Speciaal
+                                </span>
+                            @endif
 
-            <img src="{{ asset('storage/' . $book->cover_image) }}" alt="Cover"
-                class="w-full h-40 object-cover rounded-lg mb-3">
-
-                    <h4 class="text-lg font-bold text-indigo-800 mb-1">
-                        {{ $book->title }}
-                         @if($book->is_special)
-                        <span class="text-yellow-500 ml-1">⭐</span>
-                         @endif
-                        </h4>
-                        <!-- new -->
-                        @if($book->averageRating())
-    <p class="text-sm text-yellow-600 mt-1">
-        ⭐ {{ $book->averageRating() }} / 5
-    </p>
-@endif
-
-                            {{-- Badge for new books --}}
                             @if($book->created_at->gt(now()->subDays(2)))
-                                <span class="absolute top-2 right-2 bg-yellow-400 text-xs font-bold text-white px-2 py-1 rounded-full animate-pulse">
+                                <span class="absolute top-2 right-2 bg-yellow-400 text-white text-xs font-bold px-2 py-1 rounded-full animate-bounce">
                                     🆕 Nieuw
                                 </span>
                             @endif
 
+                            <img src="{{ asset('storage/' . $book->cover_image) }}" alt="Cover"
+                                 class="w-full h-44 object-cover rounded-xl shadow-sm mb-3 transition-transform duration-300 hover:scale-105">
+
+                            <h4 class="text-lg font-bold text-indigo-800">
+                                {{ $book->title }}
+                                @if($book->is_special)
+                                    <span class="text-yellow-500 ml-1">⭐</span>
+                                @endif
+                            </h4>
+
+                            @if($book->averageRating())
+                                <p class="text-sm text-yellow-600 mt-1">
+                                    ⭐ {{ $book->averageRating() }} / 5
+                                </p>
+                            @endif
+
                             <div class="flex justify-between items-center mt-4">
                                 <a href="{{ route('books.edit', $book) }}"
-                                   class="text-sm font-semibold text-blue-600 hover:underline transition">
+                                   class="text-sm font-semibold text-blue-600 hover:underline hover:scale-105 transition">
                                     ✏️ Bewerking
                                 </a>
-
                                 <form action="{{ route('books.destroy', $book) }}" method="POST"
-                                      onsubmit="return confirm('Are you sure you want to delete this book?')">
+                                      onsubmit="return confirm('Weet je zeker dat je dit boek wilt verwijderen?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
-                                            class="text-sm font-semibold text-red-500 hover:underline transition">
+                                            class="text-sm font-semibold text-red-500 hover:underline hover:scale-105 transition">
                                         🗑️ Verwijderen
                                     </button>
                                 </form>
@@ -67,8 +68,43 @@
                     @endforeach
                 </div>
             @else
-                <p class="text-center text-gray-600 mt-8 text-lg">📭 You haven't uploaded any books yet.</p>
+                <p class="text-center text-gray-600 mt-10 text-lg animate-fade-in">📭 Je hebt nog geen boeken geüpload.</p>
             @endif
         </div>
     </div>
+
+    <!-- Animations -->
+    <style>
+        @keyframes bounce-in {
+            0% { opacity: 0; transform: scale(0.9) translateY(-10px); }
+            50% { opacity: 1; transform: scale(1.05) translateY(4px); }
+            100% { transform: scale(1) translateY(0); }
+        }
+
+        @keyframes fade-in {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-bounce-in {
+            animation: bounce-in 0.8s ease-out;
+        }
+
+        .animate-fade-in {
+            animation: fade-in 1s ease forwards;
+        }
+
+        .animate-fade-in-slow {
+            animation: fade-in 1.8s ease forwards;
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 8px #c4b5fd; }
+            50% { text-shadow: 0 0 20px #8b5cf6; }
+        }
+
+        .glow-text {
+            animation: glow 2.5s ease-in-out infinite;
+        }
+    </style>
 </x-app-layout>

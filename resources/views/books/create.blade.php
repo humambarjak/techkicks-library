@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="text-3xl font-extrabold text-center text-indigo-700 mt-4 drop-shadow animate-fade-in-top">
-            ✨ Nieuw boek uploaden
+             Nieuw boek uploaden
         </h2>
     </x-slot>
 
