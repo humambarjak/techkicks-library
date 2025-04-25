@@ -1,90 +1,87 @@
 <audio id="flip-sound" src="{{ asset('sounds/page-flip.mp3') }}"></audio>
 
+<!-- 🎵 Background Music -->
+<audio id="bg-music" src="{{ asset('sounds/reading-music.mp3') }}" autoplay loop></audio>
+
 <x-app-layout>
     <div class="min-h-screen bg-gradient-to-r from-purple-100 via-blue-100 to-pink-100 py-12 px-4">
         <h2 class="text-4xl font-extrabold text-center text-indigo-700 drop-shadow mb-8">
             📖 Leesmodus
         </h2>
 
-
         <!-- 🔙 Floating Back Button -->
         <a href="{{ route('library.index') }}"
-        class="fixed top-5 left-5 z-50 bg-white/90 text-indigo-700 font-semibold px-4 py-2 rounded-full shadow-lg border border-indigo-300 hover:bg-indigo-100 transition-transform hover:scale-105 hover:shadow-xl flex items-center gap-2">
-        <span class="animate-bounce">🔙</span> teruggaan
+           class="fixed top-5 left-5 z-50 bg-white/90 text-indigo-700 font-semibold px-4 py-2 rounded-full shadow-lg border border-indigo-300 hover:bg-indigo-100 transition-transform hover:scale-105 hover:shadow-xl flex items-center gap-2">
+            <span class="animate-bounce">🔙</span> teruggaan
         </a>
 
-
         <div class="max-w-5xl mx-auto flex flex-col md:flex-row gap-6 items-start">
-    <!-- Book Cover on the left -->
-    <div class="hidden md:block w-32 flex-shrink-0">
-        <img src="{{ asset('storage/' . $book->cover_image) }}" alt="Book Cover"
-             class="rounded-lg shadow-md border border-indigo-200" />
-        <p class="text-center text-xs text-gray-500 mt-2">📘 {{ $book->title }}</p>
-    </div>
+            <!-- 📘 Book Cover & Music Toggle -->
+            <div class="hidden md:flex flex-col items-center w-32 flex-shrink-0">
+                <img src="{{ asset('storage/' . $book->cover_image) }}" alt="Book Cover"
+                     class="rounded-lg shadow-md border border-indigo-200" />
+                <p class="text-center text-xs text-gray-500 mt-2">📘 {{ $book->title }}</p>
 
-    <!-- PDF & Controls on the right -->
-    <div class="flex-1 flex flex-col items-center">
-        
-        <!-- PDF Canvas -->
-        <canvas id="pdf-canvas" class="rounded-xl shadow-2xl border-4 border-indigo-300 mb-6"></canvas>
+                <!-- 🔊 Music Toggle -->
+                <button id="musicToggle"
+                        class="mt-4 bg-white/90 text-indigo-700 px-3 py-1 rounded-full shadow border border-indigo-300 hover:bg-indigo-100 transition hover:scale-105 text-sm"
+                        title="Muziek aan/uit">
+                    🔊 Muziek
+                </button>
+            </div>
 
-        <!-- Controls -->
-        <div class="flex items-center justify-between w-full max-w-md mb-4">
-            <button id="prev" class="bg-indigo-600 text-white px-4 py-2 rounded-lg shadow hover:bg-indigo-700 transition">
-                ⬅ Vorige
-            </button>
+            <!-- 📄 PDF & Controls -->
+            <div class="flex-1 flex flex-col items-center">
+                <canvas id="pdf-canvas" class="rounded-xl shadow-2xl border-4 border-indigo-300 mb-6"></canvas>
 
-            <span id="page-info" class="text-indigo-800 font-semibold text-lg"></span>
-
-            <button id="next" class="bg-indigo-600 text-white px-4 py-2 rounded-lg shadow hover:bg-indigo-700 transition">
-                Volgende ➡
-            </button>
-        </div>
-
-        <!-- Rating Form -->
-        @if(Auth::user()->role === 'student')
-            <form method="POST" action="{{ route('books.rate', $book) }}" class="mt-8 text-center">
-                @csrf
-                <label class="block text-lg font-semibold text-indigo-800 mb-2"> Geef je beoordeling</label>
-
-                <div class="inline-flex items-center gap-2">
-                    @for($i = 1; $i <= 5; $i++)
-                        <label>
-                            <input type="radio" name="rating" value="{{ $i }}" class="hidden" onchange="this.form.submit()" />
-                            <span class="text-3xl cursor-pointer hover:scale-110 transition transform duration-200">⭐</span>
-                        </label>
-                    @endfor
+                <div class="flex items-center justify-between w-full max-w-md mb-4">
+                    <button id="prev" class="bg-indigo-600 text-white px-4 py-2 rounded-lg shadow hover:bg-indigo-700 transition">
+                        ⬅ Vorige
+                    </button>
+                    <span id="page-info" class="text-indigo-800 font-semibold text-lg"></span>
+                    <button id="next" class="bg-indigo-600 text-white px-4 py-2 rounded-lg shadow hover:bg-indigo-700 transition">
+                        Volgende ➡
+                    </button>
                 </div>
 
-                <p class="text-sm text-gray-500 mt-2">Klik op het aantal sterren dat je wilt geven</p>
-            </form>
-        @endif
+                <!-- ⭐ Rating -->
+                @if(Auth::user()->role === 'student')
+                    <form method="POST" action="{{ route('books.rate', $book) }}" class="mt-8 text-center">
+                        @csrf
+                        <label class="block text-lg font-semibold text-indigo-800 mb-2">Geef je beoordeling</label>
+                        <div class="inline-flex items-center gap-2">
+                            @for($i = 1; $i <= 5; $i++)
+                                <label>
+                                    <input type="radio" name="rating" value="{{ $i }}" class="hidden" onchange="this.form.submit()" />
+                                    <span class="text-3xl cursor-pointer hover:scale-110 transition transform duration-200">⭐</span>
+                                </label>
+                            @endfor
+                        </div>
+                        <p class="text-sm text-gray-500 mt-2">Klik op het aantal sterren dat je wilt geven</p>
+                    </form>
+                @endif
 
-        <!-- Bookmark -->
-        <button id="bookmark" class="mt-6 bg-yellow-400 hover:bg-yellow-500 text-white font-bold px-6 py-2 rounded-lg shadow transition">
+                <!-- 🔖 Bookmark -->
+                <button id="bookmark" class="mt-6 bg-yellow-400 hover:bg-yellow-500 text-white font-bold px-6 py-2 rounded-lg shadow transition">
                     🔖 Voeg deze pagina toe aan je bladwijzers
                 </button>
             </div>
         </div>
 
-
-        <!-- Notes Panel -->
-        <div id="notesPanel" class="fixed right-0 top-20 bg-white/90 shadow-xl rounded-l-xl w-72 h-[85vh] p-4 overflow-y-auto border-l-4 border-yellow-400 hidden z-50">
+        <!-- 📝 Notes Panel -->
+        <div id="notesPanel"
+             class="fixed right-0 top-20 bg-white/90 shadow-xl rounded-l-xl w-72 h-[85vh] p-4 overflow-y-auto border-l-4 border-yellow-400 hidden z-50">
             <h3 class="text-xl font-bold text-indigo-700 mb-4 flex items-center gap-2">
                 📝 Notities
             </h3>
             <div id="notesList" class="space-y-2 text-sm text-gray-700"></div>
         </div>
 
-        <!-- Toggle Notes Button -->
+        <!-- 📌 Toggle Notes Button -->
         <button id="toggleNotes"
-            class="fixed right-4 top-4 bg-yellow-400 text-white px-3 py-2 rounded-full shadow-lg hover:bg-yellow-500 transition z-50">
+                class="fixed right-4 top-4 bg-yellow-400 text-white px-3 py-2 rounded-full shadow-lg hover:bg-yellow-500 transition z-50">
             📝 Notities
         </button>
-
-        <script>
-            const savedNotes = @json($notes);
-        </script>
 
         <!-- PDF.js -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
@@ -101,18 +98,19 @@
             .flip-left {
                 animation: flip 0.6s forwards;
             }
-            .animate-bounce {
-            animation: bounce 1.2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-4px); }
-        }
 
             @keyframes flip {
                 0% { transform: rotateY(0deg); }
                 100% { transform: rotateY(-180deg); }
+            }
+
+            .animate-bounce {
+                animation: bounce 1.2s infinite;
+            }
+
+            @keyframes bounce {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-4px); }
             }
         </style>
 
@@ -130,7 +128,7 @@
                     canvas.height = viewport.height;
                     canvas.width = viewport.width;
                     page.render({ canvasContext: ctx, viewport });
-                    document.getElementById("page-info").textContent = `Page ${pageNum} of ${pdfDoc.numPages}`;
+                    document.getElementById("page-info").textContent = `Pagina ${pageNum} van ${pdfDoc.numPages}`;
                 });
             };
 
@@ -159,14 +157,15 @@
             document.getElementById("next").addEventListener("click", () => flipPage('next'));
             document.getElementById("prev").addEventListener("click", () => flipPage('prev'));
             document.getElementById("bookmark").addEventListener("click", () => {
-                alert(`🔖 Bookmarked Page ${pageNum}`);
+                alert(`🔖 Pagina ${pageNum} is opgeslagen als bladwijzer!`);
             });
 
             loadPDF();
         </script>
 
-        <!-- Sticky Notes -->
+        <!-- 📝 Notes Logic -->
         <script>
+            const savedNotes = @json($notes);
             const notesPanel = document.getElementById("notesPanel");
             const toggleNotes = document.getElementById("toggleNotes");
             const notesList = document.getElementById("notesList");
@@ -179,7 +178,7 @@
                 const note = document.createElement("div");
                 note.className = "p-2 bg-yellow-100 border-l-4 border-yellow-400 rounded shadow";
                 note.innerHTML = `
-                    <strong>📄 Page ${page}</strong>
+                    <strong>📄 Pagina ${page}</strong>
                     <textarea class="w-full mt-1 text-sm p-1 rounded border border-gray-300 bg-white">${content}</textarea>
                 `;
                 notesList.appendChild(note);
@@ -189,7 +188,6 @@
                 savedNotes.forEach(note => addNote(note.content, note.page));
             }
 
-            // Add "Add Note" Button
             document.getElementById("bookmark").insertAdjacentHTML("afterend", `
                 <button id="addNote" class="mt-4 bg-indigo-400 hover:bg-indigo-500 text-white font-bold px-4 py-2 rounded shadow transition">
                     ➕ Notitie voor pagina toevoegen
@@ -200,7 +198,6 @@
                 addNote();
             });
 
-            // Save Notes to Server (debounced)
             function saveNotesToServer() {
                 const allNotes = [];
                 document.querySelectorAll("#notesList textarea").forEach(textarea => {
@@ -232,7 +229,32 @@
                 }, 800);
             });
 
-            // Load existing notes
             loadNotesFromDatabase();
         </script>
-    </x-app-layout>
+
+        <!-- 🎵 Music Toggle Logic -->
+        <script>
+            const music = document.getElementById("bg-music");
+            const toggleBtn = document.getElementById("musicToggle");
+            let isMuted = false;
+
+            toggleBtn.addEventListener("click", () => {
+                isMuted = !isMuted;
+                music.muted = isMuted;
+                toggleBtn.textContent = isMuted ? "🔇 Muziek" : "🔊 Muziek";
+            });
+
+            // Fade in music
+            music.volume = 0;
+            let vol = 0;
+            const fadeInterval = setInterval(() => {
+                if (vol < 0.4) {
+                    vol += 0.01;
+                    music.volume = vol;
+                } else {
+                    clearInterval(fadeInterval);
+                }
+            }, 80);
+        </script>
+    </div>
+</x-app-layout>
