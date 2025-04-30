@@ -15,6 +15,7 @@ class Book extends Model
         'category',
         'user_id',
         'is_special', // ✅ THIS LINE IS NEEDED
+        'level', // ✅ Add this!
     ];
     public function favoritedBy()
     {

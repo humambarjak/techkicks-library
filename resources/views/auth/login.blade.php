@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <div class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-yellow-100 via-blue-100 to-green-100 px-4">
+   <div class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-yellow-100 via-blue-100 to-green-100 px-4">
 
         <!-- ✅ Custom Logo ABOVE the card -->
         <div class="mb-6">
@@ -42,11 +42,14 @@
                     @endif
                 </div>
 
-                <!-- Submit -->
-                <button type="submit"
-                    class="w-full flex justify-center items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg shadow transition transform hover:scale-105">
-                     Inloggen
-                </button>
+                <!-- 🌟 New Animated Submit Button -->
+<button type="submit" class="animated-button-goldblue w-full relative overflow-hidden mt-2">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    Inloggen
+</button>
             </form>
 
             <!-- Register Prompt -->
@@ -56,4 +59,99 @@
             </p>
         </div>
     </div>
+
+    <!-- 🌟 Custom Button CSS -->
+    <style>
+    .animated-button-goldblue {
+    background: linear-gradient(45deg, #3b82f6, #2563eb);
+    padding: 14px 20px;
+    display: inline-block;
+    overflow: hidden;
+    color: white;
+    font-size: 18px;
+    letter-spacing: 1.5px;
+    text-align: center;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 8px;
+    position: relative;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.animated-button-goldblue::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #60a5fa; /* soft blue overlay */
+    opacity: 0;
+    transition: 0.3s ease;
+    border-radius: 8px;
+}
+
+.animated-button-goldblue:hover::before {
+    opacity: 0.2;
+}
+
+.animated-button-goldblue span {
+    position: absolute;
+}
+
+.animated-button-goldblue span:nth-child(1) {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(to left, rgba(255, 215, 0, 0),rgb(255, 251, 0)); /* gold light */
+    animation: animateTop 2s linear infinite;
+}
+
+.animated-button-goldblue span:nth-child(2) {
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 2px;
+    background: linear-gradient(to top, rgba(255, 215, 0, 0),rgb(255, 220, 125));
+    animation: animateRight 2s linear -1s infinite;
+}
+
+.animated-button-goldblue span:nth-child(3) {
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(to right, rgba(255, 215, 0, 0),rgb(241, 225, 0));
+    animation: animateBottom 2s linear infinite;
+}
+
+.animated-button-goldblue span:nth-child(4) {
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 2px;
+    background: linear-gradient(to bottom, rgba(255, 215, 0, 0),rgb(255, 220, 125));
+    animation: animateLeft 2s linear -1s infinite;
+}
+
+@keyframes animateTop {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+@keyframes animateRight {
+    0% { transform: translateY(100%); }
+    100% { transform: translateY(-100%); }
+}
+@keyframes animateBottom {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+@keyframes animateLeft {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100%); }
+}
+    </style>
 </x-guest-layout>

@@ -107,86 +107,14 @@
         @endforeach
     </div>
 
-    <!-- 🔚 Footer -->
-    <footer class="w-full mt-24 text-indigo-900 py-16 px-6 border-t border-indigo-200">
-
-    <div class="w-full max-w-screen-2xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-10 text-sm">
-        <div>
-            <h4 class="font-bold mb-3">TechKicks</h4>
-            <ul class="space-y-1">
-            <li><a href="https://techkicks.nl/en/over-ons/" target="_blank" rel="noopener">Over</a></li>
-            <li><a href="https://techkicks.nl/en/contact/" target="_blank" rel="noopener">contact</a></li>
-            </ul>
-        </div>
-        <div>
-            <h4 class="font-bold mb-3">Bronnen</h4>
-            <ul class="space-y-1">
-                <li><a href="#">Blog</a></li>
-                <li><a href="#">Apps</a></li>
-            </ul>
-        </div>
-        <div>
-            <h4 class="font-bold mb-3">Service</h4>
-            <ul class="space-y-1">
-                <li><a href="#">Veelgestelde vragen</a></li>
-                <li><a href="#">Wachtwoord vergeten</a></li>
-                <li><a href="#">Klachtenregeling</a></li>
-            </ul>
-        </div>
-        <div>
-            <h4 class="font-bold mb-3">Merken</h4>
-            <ul class="space-y-1">
-                <li><a href="#">TechKicks Junior</a></li>
-                <li><a href="#">FutureLearn</a></li>
-            </ul>
-        </div>
-        <div>
-            <h4 class="font-bold mb-3">Legal</h4>
-            <ul class="space-y-1">
-                <li><a href="#">Privacy</a></li>
-                <li><a href="#">Cookies</a></li>
-                <li><a href="#">Algemene Voorwaarden</a></li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="w-full max-w-screen-2xl mx-auto mt-10 border-t border-indigo-300 pt-8 flex flex-col md:flex-row justify-between items-center gap-6">
-        <!-- Newsletter -->
-        <div class="w-full md:w-auto text-center md:text-left">
-            <h5 class="font-semibold mb-2">Blijf op de hoogte!</h5>
-            <form class="flex flex-col sm:flex-row gap-2 items-center justify-center md:justify-start">
-                <input type="email" placeholder="Je e-mailadres"
-                       class="px-4 py-2 rounded-lg border border-indigo-300 focus:ring-2 focus:ring-indigo-400 shadow-sm w-full sm:w-64">
-                <button type="submit"
-                        class="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition">
-                    Verstuur
-                </button>
-            </form>
-        </div>
-
-        <!-- Social Media -->
-        <div class="flex gap-4 mt-6 md:mt-0">
-    <a href="https://www.facebook.com/techkicksnl" target="_blank" rel="noopener">
-        <img src="{{ asset('images/socials/facebook.png') }}" alt="Facebook" class="w-6 h-6 hover:scale-110 transition-transform">
-    </a>
-    <a href="https://www.instagram.com/techkicksnl/" target="_blank" rel="noopener">
-        <img src="{{ asset('images/socials/instagram.png') }}" alt="Instagram" class="w-6 h-6 hover:scale-110 transition-transform">
-    </a>
-    <a href="https://www.youtube.com/@techkicks" target="_blank" rel="noopener">
-        <img src="{{ asset('images/socials/youtube.png') }}" alt="YouTube" class="w-6 h-6 hover:scale-110 transition-transform">
-    </a>
-    <a href="https://twitter.com/techkicks" target="_blank" rel="noopener">
-        <img src="{{ asset('images/socials/twitter.png') }}" alt="Twitter" class="w-6 h-6 hover:scale-110 transition-transform">
-    </a>
-</div>
-
-    </div>
-
-    <div class="w-full text-center mt-8 text-sm text-gray-700">
-        © {{ now()->year }} TechKicks. Alle rechten voorbehouden.
-    </div>
-</footer>
+        <!-- 🔚 Footer -->
+        <footer class= "text-center mt-5">
+                <h4 class="text-xl font-bold text-indigo-600">❓ Hulp Nodig?</h4>
+                <p class="text-gray-700">
+                    Neem contact op met je docent of stuur ons een e-mail op <a href="mailto:support@techkicks.nl" class="text-indigo-600 underline">Rian@techkicks.nl</a>
+                </p>
+    </footer>
 
 
-</body>
+    </body>
 </html>

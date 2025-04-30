@@ -51,6 +51,12 @@
 
                         <h3 class="text-xl font-semibold text-indigo-700">{{ $book->title }}</h3>
                         <p class="text-sm text-gray-600">{{ $book->description }}</p>
+                        @if($book->level)
+                            <p class="text-sm text-indigo-600 font-semibold mt-1">
+                                🎯 Niveau: {{ $book->level }}
+                            </p>
+                        @endif
+
 
                         <a href="{{ route('library.read', $book) }}"
                            onclick="handleBookChoice(event, this)"

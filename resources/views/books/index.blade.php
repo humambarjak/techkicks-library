@@ -36,34 +36,45 @@
                             <img src="{{ asset('storage/' . $book->cover_image) }}" alt="Cover"
                                  class="w-full h-44 object-cover rounded-xl shadow-sm mb-3 transition-transform duration-300 hover:scale-105">
 
-                            <h4 class="text-lg font-bold text-indigo-800">
-                                {{ $book->title }}
-                                @if($book->is_special)
-                                    <span class="text-yellow-500 ml-1">⭐</span>
-                                @endif
-                            </h4>
-
-                            @if($book->averageRating())
-                                <p class="text-sm text-yellow-600 mt-1">
-                                    ⭐ {{ $book->averageRating() }} / 5
-                                </p>
+                                 <h4 class="text-lg font-bold text-indigo-800">
+                            {{ $book->title }}
+                            @if($book->is_special)
+                                <span class="text-yellow-500 ml-1">⭐</span>
                             @endif
+                        </h4>
+                        @if($book->level)
+                        <p class="text-sm text-indigo-600 font-semibold mt-1">
+                            🎯 Niveau: {{ $book->level }}
+                        </p>
+                          @endif
 
-                            <div class="flex justify-between items-center mt-4">
-                                <a href="{{ route('books.edit', $book) }}"
-                                   class="text-sm font-semibold text-blue-600 hover:underline hover:scale-105 transition">
-                                    ✏️ Bewerking
-                                </a>
-                                <form action="{{ route('books.destroy', $book) }}" method="POST"
-                                      onsubmit="return confirm('Weet je zeker dat je dit boek wilt verwijderen?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                            class="text-sm font-semibold text-red-500 hover:underline hover:scale-105 transition">
-                                        🗑️ Verwijderen
-                                    </button>
-                                </form>
-                            </div>
+                        @if($book->averageRating())
+                            <p class="text-sm text-yellow-600 mt-1">
+                                ⭐ {{ $book->averageRating() }} / 5
+                            </p>
+                        @endif
+
+                        <div class="flex justify-between items-center mt-4">
+                            <a href="{{ route('books.edit', $book) }}" class="text-xs font-semibold text-blue-600 hover:underline hover:scale-105 transition">
+                                ✏️ Bewerking
+                            </a>
+                            <form action="{{ route('books.destroy', $book) }}" method="POST"
+                                onsubmit="return confirm('Weet je zeker dat je dit boek wilt verwijderen?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                        class="text-xs font-semibold text-red-500 hover:underline hover:scale-105 transition">
+                                    🗑️ Verwijderen
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="flex justify-center mt-4">
+                            <a href="{{ route('books.view', $book->id) }}"
+                            class="bg-indigo-500 hover:bg-indigo-600 text-white text-xs font-semibold px-4 py-2 rounded-full shadow-md transition-all duration-300 transform hover:-translate-y-1">
+                                📖 Boek Bekijken
+                            </a>
+                        </div>
                         </div>
                     @endforeach
                 </div>

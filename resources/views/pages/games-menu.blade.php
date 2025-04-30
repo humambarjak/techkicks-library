@@ -24,6 +24,16 @@
         <p class="text-gray-700 text-center max-w-xl mb-10 text-lg">Kies een leuk en leerzaam spel om je leesvaardigheid te verbeteren!</p>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-10 w-full max-w-6xl">
+        <!-- 🏁 TypRace  -->
+            <div class="game-card bg-white/80 backdrop-blur-md border border-green-200 rounded-3xl shadow-xl p-6 flex flex-col items-center text-center transition duration-300 hover:shadow-green-300 hover:-translate-y-1 hover:scale-105 cursor-pointer">
+                <img src="{{ asset('images/previews/race.gif') }}" alt="TypRace Preview" class="w-full h-44 object-cover rounded-xl mb-4 shadow-md">
+                <h2 class="text-2xl font-bold text-green-700 mb-2">🏎️ TypRace</h2>
+                <p class="text-green-800 mb-4">Wie typt het snelst over meerdere ronden en wint de race?</p>
+                <a href="{{ route('race') }}" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-full font-semibold shadow-md transition hover:scale-110">
+                    🚀 Speel Nu
+                </a>
+            </div>
+
             <!-- 🏁 Woordenstrijd -->
             <div class="game-card bg-white/80 backdrop-blur-md border border-gray-200 rounded-3xl shadow-xl p-6 flex flex-col items-center text-center transition duration-300 hover:shadow-indigo-300 hover:-translate-y-1 hover:scale-105 cursor-pointer">
                 <img src="{{ asset('images/previews/race-preview.gif') }}" alt="Race Game Preview" class="w-full h-44 object-cover rounded-xl mb-4 shadow-md">
@@ -33,6 +43,16 @@
                     🚗💨 Speel Nu
                 </a>
             </div>
+            <!-- 🌟 Typing Battle  -->
+            <div class="game-card bg-white/80 backdrop-blur-md border border-blue-200 rounded-3xl shadow-xl p-6 flex flex-col items-center text-center transition duration-300 hover:shadow-blue-300 hover:-translate-y-1 hover:scale-105 cursor-pointer">
+                <img src="{{ asset('images/previews/ztype-preview.gif') }}" alt="Typing Battle Preview" class="w-full h-44 object-cover rounded-xl mb-4 shadow-md">
+                <h2 class="text-2xl font-bold text-blue-700 mb-2">🌟 Typegevecht</h2>
+                <p class="text-blue-800 mb-4">Typ woorden om vallende vijanden te verslaan en je skills te verbeteren!</p>
+                <a href="{{ route('typing.battle') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full font-semibold shadow-md transition hover:scale-110">
+                    🎮 Speel Nu
+                </a>
+            </div>
+
 
             <!-- 🎯 Emoji Quiz -->
             <div class="game-card bg-white/80 backdrop-blur-md border border-gray-200 rounded-3xl shadow-xl p-6 flex flex-col items-center text-center transition duration-300 hover:shadow-yellow-300 hover:-translate-y-1 hover:scale-105 cursor-pointer">

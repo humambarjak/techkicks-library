@@ -57,6 +57,20 @@
                 </div>
 
                 <div>
+                    <label class="block text-lg font-semibold text-gray-800 mb-1">🎯 AVI Niveau</label>
+                    <select name="level" class="w-full p-3 border border-indigo-300 rounded-xl focus:ring-2 focus:ring-indigo-400 shadow-sm">
+                        <option value="">-- Kies een AVI-niveau --</option>
+                        <option value="AVI1" {{ $book->level == 'AVI1' ? 'selected' : '' }}>AVI 1</option>
+                        <option value="AVI2" {{ $book->level == 'AVI2' ? 'selected' : '' }}>AVI 2</option>
+                        <option value="AVI3" {{ $book->level == 'AVI3' ? 'selected' : '' }}>AVI 3</option>
+                        <option value="AVI4" {{ $book->level == 'AVI4' ? 'selected' : '' }}>AVI 4</option>
+                        <option value="AVI5" {{ $book->level == 'AVI5' ? 'selected' : '' }}>AVI 5</option>
+                        <option value="AVI6" {{ $book->level == 'AVI6' ? 'selected' : '' }}>AVI 6</option>
+                    </select>
+                </div>
+
+
+                <div>
                     <label class="block text-lg font-semibold text-gray-800 mb-2">🖼️ Huidige omslag</label>
                     <img src="{{ asset('storage/' . $book->cover_image) }}" class="h-32 rounded-lg shadow mb-2 border border-indigo-200">
                     <input type="file" name="cover_image" class="text-sm text-gray-600">
@@ -78,7 +92,7 @@
 
                 <div class="text-center">
                     <button type="submit"
-                        class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-6 py-3 rounded-full shadow-md transition transform hover:scale-105">
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-6 py-3 rounded-full shadow-md transition transform hover:scale-105 animate-bounce">
                         💾 Boek bijwerken
                     </button>
                 </div>

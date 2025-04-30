@@ -32,6 +32,12 @@ Route::get('/emoji', function () {
 Route::get('/games/menu', function () {
     return view('pages.games-menu');
 })->name('library.games');
+Route::view('/race', 'pages.race')->name('race');
+Route::get('/typing-battle', function () {
+    return view('pages.typing-battle');
+})->name('typing.battle');
+
+
 
 Route::get('/library/special', [BookController::class, 'special'])
     ->name('library.special')
@@ -90,6 +96,8 @@ Route::middleware(['auth', 'role:teacher'])->group(function () {
     Route::get('/books/{book}/edit', [BookController::class, 'edit'])->name('books.edit');
     Route::put('/books/{book}', [BookController::class, 'update'])->name('books.update');
     Route::delete('/books/{book}', [BookController::class, 'destroy'])->name('books.destroy');
+    Route::get('/books/{book}/view', [BookController::class, 'view'])->name('books.view');
+
 });
 
 Route::middleware(['auth', 'role:teacher'])->group(function () {

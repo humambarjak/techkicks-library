@@ -56,6 +56,7 @@ class BookController extends Controller
             'user_id' => auth()->id(),
             'category' => $request->category,
             'is_special' => $request->has('is_special'), // ✅ relies on checkbox existing
+            'level' => $request->level, // ✅ Add this!
         ]);
         if ($book->is_special) {
             \Log::info('✅ Book is saved as SPECIAL');
@@ -118,7 +119,7 @@ class BookController extends Controller
 {
     $book = Book::findOrFail($id);
 
-    $data = $request->only(['title', 'description', 'category']);
+    $data = $request->only(['title', 'description', 'category','level']);// ✅ Add 'level'
 
     if ($request->hasFile('cover_image')) {
         $data['cover_image'] = $request->file('cover_image')->store('covers', 'public');
@@ -202,6 +203,12 @@ public function read(Book $book)
 
     return view('library.reader', compact('book', 'notes'));
 }
+    // 🧑‍🏫 TEACHER view book
+    public function view(Book $book)
+    {
+        return view('teacher.read', compact('book'));
+    }
+
 
 
     // public function studentProgress()
