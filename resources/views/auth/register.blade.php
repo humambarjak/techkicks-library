@@ -56,12 +56,111 @@
                         Al geregistreerd?
                     </a>
 
-                    <button type="submit"
-                        class="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-2 rounded-full shadow transition duration-300 transform hover:scale-105">
-                         Registreren
-                    </button>
+                        
+    <!-- 🌟 Register Button -->
+<button type="submit" class="buttonpro">
+  <span>Registreren</span>
+</button>
                 </div>
             </form>
         </div>
     </div>
+    <!-- 🌟 ButtonPro CSS (Add this once in your page or layout) -->
+    <!-- 🌟 ButtonPro CSS -->
+<style>
+.buttonpro {
+  --btn-default-bg: #1e3a8a; /* dark blue */
+  --btn-padding: 15px 20px; /* original padding */
+  --btn-hover-bg: #9333ea; /* 💜 purple hover */
+  --btn-transition: 0.3s;
+  --btn-letter-spacing: 0.1rem;
+  --btn-animation-duration: 1.2s;
+  --btn-shadow-color: #3b82f6; /* blue shadow */
+  --hover-btn-color: #ffffff; /* white text */
+  --default-btn-color: #fff;
+  --font-size: 16px;
+  --font-weight: 600;
+  --font-family: Menlo, Roboto Mono, monospace;
+  border-radius: 6em;
+}
+
+.buttonpro {
+  box-sizing: border-box;
+  padding: var(--btn-padding);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--default-btn-color);
+  font: var(--font-weight) var(--font-size) var(--font-family);
+  background: var(--btn-default-bg);
+  cursor: pointer;
+  transition: var(--btn-transition);
+  overflow: hidden;
+  box-shadow: 0 2px 10px 0 var(--btn-shadow-color);
+  border-radius: 6em;
+  border: 2px solid #1e40af;
+}
+
+.buttonpro span {
+  letter-spacing: var(--btn-letter-spacing);
+  transition: var(--btn-transition);
+  box-sizing: border-box;
+  position: relative;
+  background: inherit;
+}
+
+.buttonpro span::before {
+  box-sizing: border-box;
+  position: absolute;
+  content: "";
+  background: inherit;
+}
+
+.buttonpro:focus {
+  scale: 1.05;
+}
+
+.buttonpro:hover,
+.buttonpro:focus {
+  background: var(--btn-hover-bg); /* 💜 purple hover */
+  box-shadow: 0px 0px 10px 0px rgba(147, 51, 234, 0.7); /* purple glow */
+  border: 2px solid #9333ea;
+  transform: scale(1.05); /* Smooth grow */
+}
+
+.buttonpro:hover span,
+.buttonpro:focus span {
+  color: var(--hover-btn-color);
+}
+
+/* cool chitchat animation */
+.buttonpro:hover span::before,
+.buttonpro:focus span::before {
+  animation: chitchat linear both var(--btn-animation-duration);
+}
+
+@keyframes chitchat {
+  0% { content: "#"; }
+  5% { content: "."; }
+  10% { content: "^{"; }
+  15% { content: "-!"; }
+  20% { content: "#$_"; }
+  25% { content: "№:0"; }
+  30% { content: "#{+."; }
+  35% { content: "@}-?"; }
+  40% { content: "?{4@%"; }
+  45% { content: "=.,^!"; }
+  50% { content: "?2@%"; }
+  55% { content: "\\;1}]"; }
+  60% { content: "?{%:%"; }
+  65% { content: "|{f[4"; }
+  70% { content: "{4%0%"; }
+  75% { content: "'1_0<"; }
+  80% { content: "{0%"; }
+  85% { content: "]>'"; }
+  90% { content: "4"; }
+  95% { content: "2"; }
+  100% { content: ""; }
+}
+</style>
 </x-guest-layout>

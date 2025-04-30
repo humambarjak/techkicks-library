@@ -1,4 +1,5 @@
 <x-app-layout>
+@section('page-background', 'space-background')
 <x-slot name="header">
     <h2 class="text-3xl font-extrabold text-center text-indigo-700 mt-4 drop-shadow animate-fade-in-top">
         🚀 Typing Battle – Versla de vallende woorden!
@@ -9,9 +10,13 @@
 <style>
     body {
         overflow: hidden;
-        background: url('/images/hunter.gif') no-repeat center center fixed;
+        background: url('/images/space-background.jpg') no-repeat center center fixed;
         background-size: cover;
     }
+    .space-background {
+    background: url('/images/space-background.jpg') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;}
     .game-area {
         position: relative;
         width: 100%;
@@ -33,16 +38,18 @@
         border-radius: 0.5rem;
     }
     .player {
-        position: absolute;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 60px;
-        height: 60px;
-        background: url('/images/spaceship.png') no-repeat center;
-        background-size: contain;
-        z-index: 10;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 60px;
+    background: url('/images/spaceship.png') no-repeat center;
+    background-size: contain;
+    z-index: 10;
+    filter: drop-shadow(0 0 10px #00f0ff) drop-shadow(0 0 20px #00f0ff);
     }
+
     .bullet {
         position: absolute;
         width: 3px;
@@ -92,6 +99,9 @@
     }
 </style>
 @endpush
+<a href="{{ route('games-menu') }}" class="inline-block bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full font-semibold shadow-md transition">
+    ⬅️ Back to Games Menu
+</a>
 
 <div class="max-w-5xl mx-auto p-6">
     <div class="flex justify-between items-center mb-4">
@@ -117,146 +127,193 @@
     <input id="hiddenInput" type="text" class="opacity-0 pointer-events-none absolute">
     <audio id="shootSound" src="/sounds/pew.mp3" preload="auto"></audio>
     <audio id="bgMusic" src="/sounds/music.mp3" preload="auto" loop></audio>
+    <audio id="gameOverSound" src="/sounds/game-over.mp3" preload="auto"></audio>
+
 </div>
 
 @push('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const wordsList = ["boek", "wetenschap", "avontuur", "geschiedenis", "bibliotheek", "fantasie", "onderwijs"];
-    const gameArea = document.getElementById('gameArea');
-    const hiddenInput = document.getElementById('hiddenInput');
-    const healthBar = document.getElementById('health');
-    const scoreCounter = document.getElementById('score');
-    const shootSound = document.getElementById('shootSound');
-    const bgMusic = document.getElementById('bgMusic');
-    const muteButton = document.getElementById('muteButton');
-    const gameOverScreen = document.getElementById('gameOver');
-    const finalScore = document.getElementById('finalScore');
-    const restartButton = document.getElementById('restartButton');
-    const player = document.getElementById('player');
+    document.addEventListener('DOMContentLoaded', function () {
+        const wordsList = ["boek", "wetenschap", "avontuur", "geschiedenis", "bibliotheek", "fantasie", "onderwijs"];
+        const gameArea = document.getElementById('gameArea');
+        const hiddenInput = document.getElementById('hiddenInput');
+        const healthBar = document.getElementById('health');
+        const scoreCounter = document.getElementById('score');
+        const shootSound = document.getElementById('shootSound');
+        const bgMusic = document.getElementById('bgMusic');
+        const muteButton = document.getElementById('muteButton');
+        const gameOverScreen = document.getElementById('gameOver');
+        const finalScore = document.getElementById('finalScore');
+        const restartButton = document.getElementById('restartButton');
 
-    let currentEnemy = null;
-    let targetWord = null;
-    let health = 100;
-    let score = 0;
-    let gameRunning = false;
-    let fallSpeed = 1;
+        let currentEnemy = null;
+        let targetWord = null;
+        let health = 100;
+        let score = 0;
+        let gameRunning = false;
+        let fallSpeed = 1;
+        let wordTimeoutId = null;
+        let wordOnScreen = false;
+        let isMuted = false;
 
-    function createWord() {
-        const word = wordsList[Math.floor(Math.random() * wordsList.length)];
-        const div = document.createElement('div');
-        div.className = 'enemy-word';
-        div.dataset.word = word;
-        div.dataset.progress = '0';
-        div.style.left = '50%';
-        div.style.transform = 'translateX(-50%)';
-        div.style.top = '0px';
-        div.innerText = word;
-        gameArea.appendChild(div);
-        currentEnemy = div;
-        targetWord = div;
-    }
+        function createWord() {
+            if (wordOnScreen) return;
+            const existing = gameArea.querySelector('.enemy-word');
+            if (existing) return;
 
-    function moveWord() {
-        if (currentEnemy && gameRunning) {
-            const top = parseFloat(currentEnemy.style.top);
-            currentEnemy.style.top = (top + fallSpeed) + 'px';
-            if (top > gameArea.clientHeight - 100) {
-                loseHealth(20);
-                currentEnemy.remove();
-                currentEnemy = null;
-                targetWord = null;
-                setTimeout(createWord, 1000);
-            }
+            const word = wordsList[Math.floor(Math.random() * wordsList.length)];
+            console.log("Creating word:", word);
+
+            const div = document.createElement('div');
+            div.className = 'enemy-word';
+            div.dataset.word = word;
+            div.dataset.progress = '0';
+            div.style.left = '50%';
+            div.style.transform = 'translateX(-50%)';
+            div.style.top = '0px';
+            div.innerText = word;
+
+            gameArea.appendChild(div);
+            currentEnemy = div;
+            targetWord = div;
+            wordOnScreen = true;
         }
-    }
 
-    function loseHealth(amount) {
-        health -= amount;
-        if (health < 0) health = 0;
-        healthBar.style.width = health + '%';
-        if (health <= 0) endGame();
-    }
+        function scheduleNextWord() {
+            if (wordTimeoutId) return;
 
-    function shootLetter(letter) {
-        if (targetWord) {
-            let progress = parseInt(targetWord.dataset.progress);
-            const word = targetWord.dataset.word;
-            if (word[progress] && word[progress].toLowerCase() === letter.toLowerCase()) {
-                progress++;
-                targetWord.dataset.progress = progress;
-                targetWord.innerHTML = `<span style="color:#ffcc00;text-shadow:0 0 5px #ffcc00;">${word.substring(0,progress)}</span>${word.substring(progress)}`;
-                if (progress === word.length) {
-                    shootSound.play();
-                    targetWord.remove();
+            wordTimeoutId = setTimeout(() => {
+                wordTimeoutId = null;
+                wordOnScreen = false;
+                createWord();
+            }, 4000);
+        }
+
+        function moveWord() {
+            if (currentEnemy && gameRunning) {
+                const top = parseFloat(currentEnemy.style.top);
+                currentEnemy.style.top = (top + fallSpeed) + 'px';
+
+                if (top > gameArea.clientHeight - 100) {
+                    loseHealth(20);
+                    currentEnemy.remove();
                     currentEnemy = null;
                     targetWord = null;
-                    score += 10;
-                    scoreCounter.textContent = score;
-                    setTimeout(createWord, 1000);
+                    scheduleNextWord();
                 }
             }
         }
-    }
 
-    function gameLoop() {
-        if (gameRunning) {
-            moveWord();
-            requestAnimationFrame(gameLoop);
+        function loseHealth(amount) {
+            health -= amount;
+            if (health < 0) health = 0;
+            healthBar.style.width = health + '%';
+            if (health <= 0) endGame();
         }
-    }
 
-    function startGame() {
-        gameRunning = true;
-        health = 100;
-        score = 0;
-        healthBar.style.width = '100%';
-        scoreCounter.textContent = 0;
-        hiddenInput.value = '';
-        hiddenInput.focus();
-        bgMusic.currentTime = 0;
-        bgMusic.play();
-        if (currentEnemy) currentEnemy.remove();
-        currentEnemy = null;
-        targetWord = null;
-        createWord();
-        gameLoop();
-    }
+        function shootLetter(letter) {
+            if (targetWord) {
+                let progress = parseInt(targetWord.dataset.progress);
+                const word = targetWord.dataset.word;
+                if (word[progress] && word[progress].toLowerCase() === letter.toLowerCase()) {
+                    progress++;
+                    targetWord.dataset.progress = progress;
+                    targetWord.innerHTML = `<span style="color:#ffcc00;text-shadow:0 0 5px #ffcc00;">${word.substring(0, progress)}</span>${word.substring(progress)}`;
 
-    function endGame() {
-        gameRunning = false;
-        bgMusic.pause();
-        finalScore.textContent = score;
-        gameOverScreen.style.display = 'flex';
-    }
-
-    hiddenInput.addEventListener('input', e => {
-        const val = e.target.value.trim().toLowerCase();
-        if (val) {
-            shootLetter(val[val.length - 1]);
-            e.target.value = '';
+                    if (progress === word.length) {
+                        shootSound.play();
+                        currentEnemy.remove();
+                        currentEnemy = null;
+                        targetWord = null;
+                        score += 10;
+                        scoreCounter.textContent = score;
+                        scheduleNextWord();
+                    }
+                }
+            }
         }
+        
+
+        function gameLoop() {
+            if (gameRunning) {
+                moveWord();
+                requestAnimationFrame(gameLoop);
+            }
+        }
+
+        function startGame() {
+            if (currentEnemy) {
+                currentEnemy.remove();
+                currentEnemy = null;
+                targetWord = null;
+            }
+
+            const leftover = gameArea.querySelectorAll('.enemy-word');
+            leftover.forEach(e => e.remove());
+
+            if (wordTimeoutId) {
+                clearTimeout(wordTimeoutId);
+                wordTimeoutId = null;
+            }
+
+            wordOnScreen = false;
+
+            gameRunning = true;
+            health = 100;
+            score = 0;
+            healthBar.style.width = '100%';
+            scoreCounter.textContent = 0;
+            hiddenInput.value = '';
+            hiddenInput.focus();
+            bgMusic.currentTime = 0;
+            bgMusic.play();
+            gameOverScreen.style.display = 'none';
+
+            setTimeout(() => {
+                createWord();
+            }, 1000);
+
+            gameLoop();
+        }
+
+        function endGame() {
+            gameRunning = false;
+            bgMusic.pause();
+            finalScore.textContent = score;
+            gameOverScreen.style.display = 'flex';
+
+            if (wordTimeoutId) {
+                clearTimeout(wordTimeoutId);
+                wordTimeoutId = null;
+            }
+        }
+
+        hiddenInput.addEventListener('input', e => {
+            const val = e.target.value.trim().toLowerCase();
+            if (val) {
+                shootLetter(val[val.length - 1]);
+                e.target.value = '';
+            }
+        });
+
+        restartButton.addEventListener('click', () => {
+            gameOverScreen.style.display = 'none';
+            startGame();
+        });
+
+        muteButton.addEventListener('click', () => {
+        isMuted = !isMuted;
+
+        bgMusic.muted = isMuted;
+        shootSound.muted = isMuted;
+
+        muteButton.textContent = isMuted ? '🔇' : '🔊';
     });
 
-    restartButton.addEventListener('click', () => {
-        gameOverScreen.style.display = 'none';
+        gameArea.addEventListener('click', () => hiddenInput.focus());
+
         startGame();
     });
-
-    muteButton.addEventListener('click', () => {
-        if (bgMusic.paused) {
-            bgMusic.play();
-            muteButton.textContent = '🔊';
-        } else {
-            bgMusic.pause();
-            muteButton.textContent = '🔇';
-        }
-    });
-
-    gameArea.addEventListener('click', () => hiddenInput.focus());
-
-    startGame();
-});
 </script>
 @endpush
 </x-app-layout>

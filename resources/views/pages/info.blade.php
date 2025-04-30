@@ -1,5 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <h2 class="text-2xl font-extrabold text-indigo-700 tracking-tight">ℹ️ Over TechKicks Bibliotheek</h2>
     </x-slot>
 
@@ -143,28 +144,102 @@
             </button>
         </form>
     </div>
-
-    <!-- Social Media -->
-            <div class="flex gap-4 mt-6 md:mt-0">
-        <a href="https://www.facebook.com/techkicksnl" target="_blank" rel="noopener">
-            <img src="{{ asset('images/socials/facebook.png') }}" alt="Facebook" class="w-6 h-6 hover:scale-110 transition-transform">
-        </a>
-        <a href="https://www.instagram.com/techkicksnl/" target="_blank" rel="noopener">
-            <img src="{{ asset('images/socials/instagram.png') }}" alt="Instagram" class="w-6 h-6 hover:scale-110 transition-transform">
-        </a>
-        <a href="https://www.youtube.com/@techkicks" target="_blank" rel="noopener">
-            <img src="{{ asset('images/socials/youtube.png') }}" alt="YouTube" class="w-6 h-6 hover:scale-110 transition-transform">
-        </a>
-        <a href="https://twitter.com/techkicks" target="_blank" rel="noopener">
-            <img src="{{ asset('images/socials/twitter.png') }}" alt="Twitter" class="w-6 h-6 hover:scale-110 transition-transform">
-        </a>
+         <!-- 🎯 New 3D Hover Social Media Buttons -->
+                <div class="parent">
+        <div class="child child-1">
+            <a href="https://twitter.com/techkicks" target="_blank" rel="noopener">
+            <button class="button">
+                <i class="fab fa-twitter text-blue-400 fa-2x"></i>
+            </button>
+            </a>
         </div>
 
+        <div class="child child-2">
+            <a href="https://www.instagram.com/techkicksnl/" target="_blank" rel="noopener">
+            <button class="button">
+                <i class="fab fa-instagram text-pink-500 fa-2x"></i>
+            </button>
+            </a>
         </div>
 
+        <div class="child child-3">
+            <a href="https://www.youtube.com/@techkicks" target="_blank" rel="noopener">
+            <button class="button">
+                <i class="fab fa-youtube text-red-500 fa-2x"></i>
+            </button>
+            </a>
+        </div>
+
+        <div class="child child-4">
+            <a href="https://www.facebook.com/techkicksnl" target="_blank" rel="noopener">
+            <button class="button">
+                <i class="fab fa-facebook-f text-blue-600 fa-2x"></i>
+            </button>
+            </a>
+        </div>
+        </div>
+        </div>
         <div class="w-full text-center mt-8 text-sm text-gray-700">
             © {{ now()->year }} TechKicks. Alle rechten voorbehouden.
         </div>
         </footer>
     </div>
+    <style>
+    /* 🎯 3D Animated Social Media Buttons */
+    .parent {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    }
+
+    .child {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform-style: preserve-3d;
+    transition: all 0.3s cubic-bezier(0.68, 0.85, 0.265, 1.85);
+    border-radius: 5px;
+    margin: 0 5px;
+    box-shadow: inset 1px 1px 2px #fff, 0 0 5px #4442;
+    }
+
+    .child:hover {
+    background-color: white;
+    transform: perspective(180px) rotateX(60deg) translateY(2px);
+    }
+
+    .child-1:hover {
+    box-shadow: 0px 10px 10px #1e90ff;
+    }
+    .child-2:hover {
+    box-shadow: 0px 10px 10px #ff00ff;
+    }
+    .child-3:hover {
+    box-shadow: 0px 10px 10px #000;
+    }
+    .child-4:hover {
+    box-shadow: 0px 10px 10px #4267b2;
+    }
+
+    .button {
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: transparent;
+    font-size: 20px;
+    transition-duration: 0.5s;
+    transition-timing-function: cubic-bezier(0.68, -0.85, 0.265, 1.55);
+    }
+
+    .child:hover > .button {
+    transform: translate3d(0px, 20px, 30px) perspective(80px) rotateX(-60deg)
+        translateY(2px) translateZ(10px);
+    }
+    </style>
+
 </x-app-layout>

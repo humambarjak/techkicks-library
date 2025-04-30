@@ -44,7 +44,8 @@
     @stack('scripts')
 </head>
 
-<body class="font-sans antialiased">
+<body class="@yield('page-background', 'bg-animated-pattern')">
+
 <div class="min-h-screen @yield('page-background', 'bg-gradient-to-br from-blue-100 via-green-100 to-yellow-100')">
 
         @include('layouts.navigation')

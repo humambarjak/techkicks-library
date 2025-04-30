@@ -73,11 +73,13 @@
                         @endif
 
                         <form method="POST" action="{{ route('books.favorite', $book) }}">
-                            @csrf
-                            <button type="submit" class="mt-2 text-red-500 hover:text-red-700">
-                                ❤️ {{ auth()->user()->favoriteBooks->contains($book) ? 'Niet meer favoriet' : 'Favoriet' }}
-                            </button>
-                        </form>
+    @csrf
+    <button type="submit" class="favorite-button">
+        <span>
+            {{ auth()->user()->favoriteBooks->contains($book) ? 'Niet meer favoriet' : 'Favoriet' }}
+        </span>
+    </button>
+</form>
                     </div>
                 </div>
             @endforeach
@@ -196,6 +198,46 @@
                 0% { transform: translateY(100vh) rotate(0deg); }
                 100% { transform: translateY(-10vh) rotate(360deg); }
             }
+            .favorite-button {
+  padding: 5px 15px 5px 10px; /* smaller and tighter */
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px 5px #e7413373;
+  background-color: #e74133;
+  color: white;
+  font-size: 14px; /* smaller text */
+  border: none;
+  display: inline-flex; /* ✅ fix inline with text */
+  align-items: center;
+  transition: all .5s ease-in-out;
+  letter-spacing: 1px;
+  margin-top: 8px;
+}
+
+.favorite-button:hover {
+  background-color: #f54d3e;
+  transition: all .5s ease-in-out;
+  box-shadow: 0px 0px 5px 3px #e7413373;
+}
+
+.favorite-button::before {
+  content: "";
+  background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNzUycHQiIGhlaWdodD0iNzUycHQiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDc1MiA3NTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiA8cGF0aCBkPSJtMzc2LjMyIDU1Mi4zYy0wLjM4NjcyIDAtMC43ODEyNS0wLjAxNTYyNS0xLjE3MTktMC4wNTA3ODEtMS4wNzgxLTAuMDc0MjE5LTIuMTM2Ny0wLjI2NTYyLTMuMTU2Mi0wLjU0Njg4LTIuNzMwNS0wLjU5Mzc1LTUuMjkzLTEuODUxNi03LjM0MzgtMy43ODEybC0xMzcuNTQtMTI5LjY2Yy00NC40NTMtNDEuOTAyLTQ5LjQ4LTExNS40Ni0xMS4yMTUtMTYzLjk3IDE5LjA4Mi0yNC4xODQgNDUuNzctMzguNjk1IDc1LjE1Mi00MC44NTUgMjguOTMtMi4xMTcyIDU2Ljg2MyA4LjAzMTIgNzguNjggMjguNTk4bDYuMjY1NiA1LjkwMjMgNi4yNjU2LTUuOTAyM2MyMS44MzItMjAuNTcgNDkuODA1LTMwLjY5MSA3OC42OTEtMjguNTk4IDI5LjM4MyAyLjE2NDEgNTYuMDY2IDE2LjY3NiA3NS4xNDUgNDAuODU1IDM4LjI2MiA0OC41MTIgMzMuMjM0IDEyMi4wNy0xMS4yMTUgMTYzLjk3bC0xMzcuNTQgMTI5LjY3Yy0yLjk5MjIgMi44MTY0LTYuOTM3NSA0LjM3NS0xMS4wMjMgNC4zNzV6IiBmaWxsPSIjZmZmIi8+Cjwvc3ZnPgo=");
+  background-size: 18px 18px;
+  background-repeat: no-repeat;
+  color: transparent;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  display: block;
+  margin-right: 5px;
+  transition: all .5s ease-in-out;
+}
+
+.favorite-button:hover::before {
+  background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNzUycHQiIGhlaWdodD0iNzUycHQiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDc1MiA3NTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiA8cGF0aCBkPSJtMzY5Ljg0IDU1MC4yOGMwLjQ3MjY2IDAuNDcyNjYgMC45NDUzMSAwLjQ3MjY2IDAuOTQ1MzEgMC45NDUzMSA2NS4zNTUtNTEuNjIxIDE5My43LTE0OC4yMyAxOTMuNy0yNDkuMTEgMC01NS44ODMtNDUuNDY1LTEwMS4zNS0xMDEuMzUtMTAxLjM1LTM5Ljc4MSAwLTc0LjM1MiAyMy4yMDctOTAuOTI2IDU2LjgyOC0wLjQ3MjY2IDAuOTQ1MzEtMS40MjE5IDMuMzE2NC0xLjQyMTkgMy4zMTY0cy0wLjk0NTMxLTEuODk0NS0wLjk0NTMxLTIuMzY3MmMtMTYuMTAyLTM0LjA5LTUwLjY3Mi01Ny43Ny05MC45MjYtNTcuNzctNTUuODgzIDAtMTAxLjM1IDQ1LjQ2MS0xMDEuMzUgMTAxLjM0IDAgMTAxLjgyIDEyNy44NyAxOTcuMDEgMTkyLjI3IDI0OC4xNnoiIGZpbGw9IiNmZmYiLz4KPC9zdmc+Cg==");
+  transition: all .5s ease-in-out;
+  transform: rotate(-1turn);
+}
         </style>
     </div>
 </x-app-layout>

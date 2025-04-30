@@ -42,13 +42,9 @@
                     @endif
                 </div>
 
-                <!-- 🌟 New Animated Submit Button -->
-<button type="submit" class="animated-button-goldblue w-full relative overflow-hidden mt-2">
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    Inloggen
+<!-- 🌟 New Fancy Blue Button with Green Hover -->
+<button type="submit" class="buttonpro w-full mt-2">
+  <span>Inloggen</span>
 </button>
             </form>
 
@@ -60,98 +56,100 @@
         </div>
     </div>
 
-    <!-- 🌟 Custom Button CSS -->
-    <style>
-    .animated-button-goldblue {
-    background: linear-gradient(45deg, #3b82f6, #2563eb);
-    padding: 14px 20px;
-    display: inline-block;
-    overflow: hidden;
-    color: white;
-    font-size: 18px;
-    letter-spacing: 1.5px;
-    text-align: center;
-    text-transform: uppercase;
-    text-decoration: none;
-    font-weight: 600;
-    border-radius: 8px;
-    position: relative;
-    transition: all 0.3s ease;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+   <!-- 🌟 Custom Button CSS -->
+<style>
+.buttonpro {
+  --btn-default-bg: #1e3a8a; /* dark blue */
+  --btn-padding: 15px 20px;
+  --btn-hover-bg: #22c55e; /* green hover background */
+  --btn-transition: 0.3s;
+  --btn-letter-spacing: 0.1rem;
+  --btn-animation-duration: 1.2s;
+  --btn-shadow-color: #3b82f6; /* blue shadow initially */
+  --hover-btn-color: #ffffff; /* white text on hover */
+  --default-btn-color: #fff;
+  --font-size: 16px;
+  --font-weight: 600;
+  --font-family: Menlo, Roboto Mono, monospace;
+  border-radius: 6em;
 }
 
-.animated-button-goldblue::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background-color: #60a5fa; /* soft blue overlay */
-    opacity: 0;
-    transition: 0.3s ease;
-    border-radius: 8px;
+.buttonpro {
+  box-sizing: border-box;
+  padding: var(--btn-padding);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--default-btn-color);
+  font: var(--font-weight) var(--font-size) var(--font-family);
+  background: var(--btn-default-bg);
+  cursor: pointer;
+  transition: var(--btn-transition);
+  overflow: hidden;
+  box-shadow: 0 2px 10px 0 var(--btn-shadow-color);
+  border-radius: 6em;
+  border: 2px solid #1e40af; /* deeper blue border */
 }
 
-.animated-button-goldblue:hover::before {
-    opacity: 0.2;
+.buttonpro span {
+  letter-spacing: var(--btn-letter-spacing);
+  transition: var(--btn-transition);
+  box-sizing: border-box;
+  position: relative;
+  background: inherit;
 }
 
-.animated-button-goldblue span {
-    position: absolute;
+.buttonpro span::before {
+  box-sizing: border-box;
+  position: absolute;
+  content: "";
+  background: inherit;
 }
 
-.animated-button-goldblue span:nth-child(1) {
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(to left, rgba(255, 215, 0, 0),rgb(255, 251, 0)); /* gold light */
-    animation: animateTop 2s linear infinite;
+.buttonpro:focus {
+  scale: 1.09;
 }
 
-.animated-button-goldblue span:nth-child(2) {
-    top: 0;
-    right: 0;
-    height: 100%;
-    width: 2px;
-    background: linear-gradient(to top, rgba(255, 215, 0, 0),rgb(255, 220, 125));
-    animation: animateRight 2s linear -1s infinite;
+.buttonpro:hover,
+.buttonpro:focus {
+  background: var(--btn-hover-bg);
+  box-shadow: 0px 0px 10px 0px rgba(34, 197, 94, 0.7); /* green glow */
+  border: 2px solid #22c55e; /* green border on hover */
 }
 
-.animated-button-goldblue span:nth-child(3) {
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(to right, rgba(255, 215, 0, 0),rgb(241, 225, 0));
-    animation: animateBottom 2s linear infinite;
+.buttonpro:hover span,
+.buttonpro:focus span {
+  color: var(--hover-btn-color);
 }
 
-.animated-button-goldblue span:nth-child(4) {
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 2px;
-    background: linear-gradient(to bottom, rgba(255, 215, 0, 0),rgb(255, 220, 125));
-    animation: animateLeft 2s linear -1s infinite;
+.buttonpro:hover span::before,
+.buttonpro:focus span::before {
+  animation: chitchat linear both var(--btn-animation-duration);
 }
 
-@keyframes animateTop {
-    0% { transform: translateX(100%); }
-    100% { transform: translateX(-100%); }
+@keyframes chitchat {
+  0% { content: "#"; }
+  5% { content: "."; }
+  10% { content: "^{"; }
+  15% { content: "-!"; }
+  20% { content: "#$_"; }
+  25% { content: "№:0"; }
+  30% { content: "#{+."; }
+  35% { content: "@}-?"; }
+  40% { content: "?{4@%"; }
+  45% { content: "=.,^!"; }
+  50% { content: "?2@%"; }
+  55% { content: "\\;1}]"; }
+  60% { content: "?{%:%"; }
+  65% { content: "|{f[4"; }
+  70% { content: "{4%0%"; }
+  75% { content: "'1_0<"; }
+  80% { content: "{0%"; }
+  85% { content: "]>'"; }
+  90% { content: "4"; }
+  95% { content: "2"; }
+  100% { content: ""; }
 }
-@keyframes animateRight {
-    0% { transform: translateY(100%); }
-    100% { transform: translateY(-100%); }
-}
-@keyframes animateBottom {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-}
-@keyframes animateLeft {
-    0% { transform: translateY(-100%); }
-    100% { transform: translateY(100%); }
-}
-    </style>
+</style>
+
 </x-guest-layout>
