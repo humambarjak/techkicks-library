@@ -1,19 +1,26 @@
-@if (request()->is('library'))
-    <!-- 📚 Floating Emoji Background (Only for Library page) -->
-    <div class="floating-books-bg">
-        @for ($i = 0; $i < 30; $i++)
-            <span style="left: {{ rand(0, 100) }}%; animation-delay: {{ rand(0, 10) }}s;">
-                📚
-            </span>
-        @endfor
-    </div>
-@endif
+
 
 <x-app-layout>
     <div class="min-h-screen bg-gradient-to-r from-blue-100 via-green-100 to-yellow-100">
-    <h1 class="mt-10 text-3xl font-bold mb-6 text-center text-indigo-700 animate-dance glow-text inline-block w-full">
+    <h1 class="mt-10 text-3xl font-sans mb-6 text-center text-indigo-700 animate-dance glow-text inline-block w-full">
     📖 Welkom, {{ Auth::user()->name }}. Tijd om te lezen 
     </h1>
+    
+<!-- 🦊 Fixed Animated Mascot - Top Right Corner -->
+<div class="fixed top-6 right-6 z-30 flex flex-col items-center animate-flip-fox">
+    <div class="text-5xl">🦊</div>
+    <p class="text-indigo-600 font-semibold text-xs mt-1 bg-white/70 px-2 py-1 rounded-full shadow">
+        Ik zoek boeken met jou mee!
+    </p>
+</div>
+
+
+
+<div class="bg-yellow-50 text-yellow-900 border border-yellow-300 rounded-xl p-4 text-sm text-center shadow mb-6 max-w-md mx-auto animate-fade-in" id="factBox">
+    📚 <span id="funFact">Wist je dat het langste kinderboek ooit 1000 pagina's had?</span>
+</div>
+
+
     @section('styles')
         <style>
             header.bg-white {
@@ -35,7 +42,7 @@
                 <option value="History" {{ $selectedCategory == 'History' ? 'selected' : '' }}>🦉 AVI 5</option>
             </select>
         </form>
-        
+   
 
         <!-- 📚 Book Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -49,10 +56,10 @@
                             </span>
                         @endif
 
-                        <h3 class="text-xl font-semibold text-indigo-700">{{ $book->title }}</h3>
+                        <h3 class="text-xl font-sans text-indigo-700">{{ $book->title }}</h3>
                         <p class="text-sm text-gray-600">{{ $book->description }}</p>
                         @if($book->level)
-                            <p class="text-sm text-indigo-600 font-semibold mt-1">
+                            <p class="text-sm text-indigo-600 font-sans mt-1">
                                 🎯 Niveau: {{ $book->level }}
                             </p>
                         @endif
@@ -93,7 +100,7 @@
         <div id="toast"
              class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
                     bg-white text-indigo-700 border-4 border-yellow-400 px-8 py-5 
-                    rounded-2xl shadow-xl font-bold text-lg hidden z-50 text-center animate-bounce-in">
+                    rounded-2xl shadow-xl font-sans text-lg hidden z-50 text-center animate-bounce-in">
             🎉 Goede keuze! Veel leesplezier!
         </div>
 
@@ -128,6 +135,20 @@
                     window.location.href = button.href;
                 }, 1200);
             }
+            document.addEventListener("DOMContentLoaded", () => {
+    const facts = [
+        "Wist je dat het langste kinderboek ooit 1000 pagina's had?",
+        "Boeken lezen helpt je woordenschat groeien 📖",
+        "🦸‍♂️ Superheldenverhalen zijn populair bij AVI 3!",
+        "📘 Elke dag 10 minuten lezen = 1 boek per maand!",
+    ];
+    const factBox = document.getElementById("funFact");
+    let index = 0;
+    setInterval(() => {
+        index = (index + 1) % facts.length;
+        factBox.textContent = facts[index];
+    }, 5000);
+});
         </script>
 
         <!-- 🖌️ All Styling -->
@@ -238,6 +259,46 @@
   transition: all .5s ease-in-out;
   transform: rotate(-1turn);
 }
+
+@keyframes bounce-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 2.5s infinite ease-in-out;
+}
+.book-card {
+  position: relative;
+  overflow: hidden;
+}
+.book-card::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(135deg, rgba(255,255,255,0.05), transparent);
+  animation: shimmer-bg 8s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes shimmer-bg {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@keyframes flip-fox {
+  0% { transform: rotateY(0deg); }
+  25% { transform: rotateY(180deg); }
+  50% { transform: rotateY(0deg) translateY(-8px); }
+  75% { transform: rotateY(180deg) translateY(4px); }
+  100% { transform: rotateY(0deg); }
+}
+.animate-flip-fox {
+  animation: flip-fox 6s infinite ease-in-out;
+}
+
         </style>
     </div>
 </x-app-layout>

@@ -8,22 +8,22 @@
 
         <!-- 💳 Login Card -->
         <div class="w-full max-w-md p-8 bg-white rounded-2xl shadow-xl">
-            <h2 class="text-2xl font-bold text-center text-blue-700 mb-2">Inloggen</h2>
-            <p class="text-sm text-center text-gray-500 mb-6">Voer je gegevens in om in te loggen.</p>
+            <h2 class="text-2xl font-sans text-center text-blue-700 mb-2">Inloggen</h2>
+            <p class="text-sm text-center font-sans text-gray-500 mb-6">Voer je gegevens in om in te loggen.</p>
 
             <form method="POST" action="{{ route('login') }}">
                 @csrf
 
                 <!-- Email -->
                 <div class="mb-4">
-                    <label for="email" class="block text-sm font-medium text-gray-700">Emailadres</label>
+                    <label for="email" class="block text-sm font-sans text-gray-700">Emailadres</label>
                     <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus
                         class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent">
                 </div>
 
                 <!-- Password -->
                 <div class="mb-4">
-                    <label for="password" class="block text-sm font-medium text-gray-700">Wachtwoord</label>
+                    <label for="password" class="block text-sm font-sans text-gray-700">Wachtwoord</label>
                     <input id="password" type="password" name="password" required
                         class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent">
                 </div>
@@ -32,26 +32,26 @@
                 <div class="flex items-center justify-between mb-6">
                     <label class="flex items-center">
                         <input type="checkbox" name="remember" class="text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
-                        <span class="ml-2 text-sm text-gray-600">Onthoud mij</span>
+                        <span class="ml-2 text-sm font-sans text-gray-600">Onthoud mij</span>
                     </label>
 
                     @if (Route::has('password.request'))
-                        <a class="text-sm text-blue-600 hover:underline" href="{{ route('password.request') }}">
+                        <a class="text-sm text-blue-600 font-sans hover:underline" href="{{ route('password.request') }}">
                             Wachtwoord vergeten?
                         </a>
                     @endif
                 </div>
 
-<!-- 🌟 New Fancy Blue Button with Green Hover -->
-<button type="submit" class="buttonpro w-full mt-2">
-  <span>Inloggen</span>
-</button>
-            </form>
+              <!-- 🌟 New Fancy Blue Button with Green Hover -->
+              <button type="submit" class="buttonpro w-full mt-2 font-sans">
+                <span>Inloggen</span>
+              </button>
+                </form>
 
             <!-- Register Prompt -->
-            <p class="mt-6 text-sm text-center text-gray-500">
+            <p class="mt-6 text-sm text-center font-sans text-gray-500">
                 Nog geen account?
-                <a href="{{ route('register') }}" class="text-blue-600 hover:underline">Registreer hier</a>
+                <a href="{{ route('register') }}" class="text-blue-600 font-sans hover:underline">Registreer hier</a>
             </p>
         </div>
     </div>

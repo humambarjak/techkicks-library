@@ -23,6 +23,7 @@ class User extends Authenticatable
         'password',
         'role',
         'avatar', // ✅ this line!
+        'level', // ✅ Add this!
     ];
     public function favoriteBooks()
     {

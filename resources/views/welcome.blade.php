@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Welcome to TechKicks Library</title>
+    <title >Welcome to TechKicks Library</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -44,10 +44,10 @@
 
     <!-- 🔠 Header -->
     <div class="text-center">
-        <h1 class="text-4xl sm:text-5xl font-extrabold text-indigo-800 mb-4 animate-typing">
+        <h1 class="text-4xl sm:text-5xl font-sans text-indigo-800 mb-4 animate-typing">
             🎓 Welkom op het TechKicks-platform!
         </h1>
-        <p class="text-gray-700 max-w-2xl mx-auto mb-12">
+        <p class="text-gray-700 font-sans max-w-2xl mx-auto mb-12">
         Ontdek, lees en groei! Een levendige digitale bibliotheek waar studenten en docenten samen kennis en verhalen delen.
         </p>
     </div>
@@ -87,21 +87,21 @@
         <img src="{{ $card['image'] }}" alt="Card image"php
              class="w-35 h-35 sm:w-36 sm:h-36 object-cover rounded-full border-4 border-indigo-300 shadow-lg transition-transform duration-500 hover:scale-110">
 
-        <h3 class="text-xl sm:text-2xl font-bold text-indigo-700 mt-4">{{ $card['title'] }}</h3>
-        <p class="text-gray-600 text-base mt-2">{{ $card['desc'] }}</p>
+        <h3 class="text-xl sm:text-2xl font-sans text-indigo-700 mt-4">{{ $card['title'] }}</h3>
+        <p class="text-gray-600 font-sans text-base mt-2">{{ $card['desc'] }}</p>
     </a>
 @endforeach
 
     </div>
 
     <!-- 🚀 Buttons -->
-    <div class="flex gap-6 mt-12">
+    <div class="flex gap-6 font-sans mt-12">
         @foreach([
             ['text' => 'inloggen', 'route' => 'login', 'color' => 'bg-indigo-500 hover:bg-indigo-600'],
             ['text' => 'registreren', 'route' => 'register', 'color' => 'bg-green-500 hover:bg-green-600'],
         ] as $btn)
             <a href="{{ route($btn['route']) }}"
-               class="{{ $btn['color'] }} text-white px-8 py-3 rounded-full text-lg shadow-lg transition-all transform hover:scale-110 animate-bounce hover:animate-none">
+               class="{{ $btn['color'] }} text-white px-8 py-3 rounded-full font-sans text-lg shadow-lg transition-all transform hover:scale-110 animate-bounce hover:animate-none">
                {{ $btn['text'] }}
             </a>
         @endforeach
@@ -109,8 +109,8 @@
 
         <!-- 🔚 Footer -->
         <footer class= "text-center mt-5">
-                <h4 class="text-xl font-bold text-indigo-600">❓ Hulp Nodig?</h4>
-                <p class="text-gray-700">
+                <h4 class="text-xl font-sans text-indigo-600">❓ Hulp Nodig?</h4>
+                <p class="text-gray-700 font-sans">
                     Neem contact op met je docent of stuur ons een e-mail op <a href="mailto:support@techkicks.nl" class="text-indigo-600 underline">Rian@techkicks.nl</a>
                 </p>
     </footer>

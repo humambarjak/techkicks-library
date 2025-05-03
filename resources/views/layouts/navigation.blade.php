@@ -14,13 +14,13 @@
                 <!-- Navigation Links -->
                 <div class="hidden sm:flex sm:items-center gap-6 text-lg font-semibold text-gray-700">
                     <x-nav-link :href="route('library.games')" :active="request()->routeIs('library.games')" class="hover:text-indigo-600 transition">
-                         <span class="ml-1">Spel</span>
+                        <span class="ml-1">Spel</span>
                     </x-nav-link>
                     <x-nav-link :href="route('info.page')" :active="request()->is('info')" class="hover:text-indigo-600 transition">
-                         <span class="ml-1">Info</span>
+                        <span class="ml-1">Info</span>
                     </x-nav-link>
                     <x-nav-link :href="route('library.special')" :active="request()->routeIs('library.special')" class="hover:text-indigo-600 transition">
-                         <span class="ml-1">Special</span>
+                        <span class="ml-1">Special</span>
                     </x-nav-link>
                 </div>
             </div>
@@ -43,7 +43,7 @@
 
                         <x-slot name="content">
                             <x-dropdown-link :href="route('profile.edit')">
-                                {{ __('Profile') }}
+                                👤 Profiel
                             </x-dropdown-link>
 
                             @if(Auth::user()->role === 'student')
@@ -52,16 +52,14 @@
                             @endif
 
                             @if(Auth::user()->role === 'teacher')
-                            <x-dropdown-link :href="route('books.index')">📘 Boeken beheren</x-dropdown-link>
-                            <x-dropdown-link :href="route('teacher.progress')">📊 Student voortgang</x-dropdown-link>
+                                <x-dropdown-link :href="route('books.index')">📘 Boeken beheren</x-dropdown-link>
+                                <x-dropdown-link :href="route('teacher.progress')">📊 Student voortgang</x-dropdown-link>
                             @endif
-
 
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault(); this.closest('form').submit();">
-                                    {{ __('Uitloggen') }}
+                                <x-dropdown-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
+                                    🚪 Uitloggen
                                 </x-dropdown-link>
                             </form>
                         </x-slot>
@@ -69,8 +67,7 @@
                 @endauth
 
                 @guest
-                    <a href="{{ route('login') }}"
-                       class="text-sm text-indigo-700 hover:underline font-semibold px-4 py-2 transition">
+                    <a href="{{ route('login') }}" class="text-sm text-indigo-700 hover:underline font-semibold px-4 py-2 transition">
                         Inloggen
                     </a>
                 @endguest
@@ -103,14 +100,13 @@
 
                 <div class="mt-3 space-y-1">
                     <x-responsive-nav-link :href="route('profile.edit')">
-                        {{ __('Profile') }}
+                        👤 Profiel
                     </x-responsive-nav-link>
 
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <x-responsive-nav-link :href="route('logout')"
-                                               onclick="event.preventDefault(); this.closest('form').submit();">
-                            {{ __('Uitloggen') }}
+                        <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
+                            🚪 Uitloggen
                         </x-responsive-nav-link>
                     </form>
                 </div>
@@ -119,8 +115,7 @@
 
         @guest
             <div class="pt-4 pb-4 px-4 text-center border-t border-gray-200">
-                <a href="{{ route('login') }}"
-                   class="text-indigo-600 font-semibold hover:underline text-base">
+                <a href="{{ route('login') }}" class="text-indigo-600 font-semibold hover:underline text-base">
                     Inloggen
                 </a>
             </div>

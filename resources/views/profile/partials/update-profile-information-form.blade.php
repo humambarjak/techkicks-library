@@ -2,7 +2,7 @@
     <header class="mb-6 text-center">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-        <h2 class="text-3xl font-extrabold text-indigo-700 tracking-wide drop-shadow-sm font-[Comic Neue]">
+        <h2 class="text-3xl font-sans text-indigo-700 tracking-wide drop-shadow-sm font-sans">
             {{ __('Profile Information') }}
         </h2>
         <p class="text-md text-gray-600 mt-1">

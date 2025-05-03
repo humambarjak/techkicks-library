@@ -4,7 +4,7 @@
 
             <!-- 🌟 Page Title -->
             <div class="text-center mb-12">
-                <h1 class="text-4xl font-extrabold text-indigo-800 drop-shadow">📊 Leesvoortgang</h1>
+                <h1 class="text-4xl font-sans text-indigo-800 drop-shadow">📊 Leesvoortgang</h1>
                 <p class="text-gray-700 text-lg mt-2">Bekijk welke boeken je studenten hebben gelezen</p>
             </div>
 
@@ -32,7 +32,7 @@
                             <img src="https://api.dicebear.com/6.x/fun-emoji/svg?seed={{ $student->id }}"
                                  class="h-14 w-14 rounded-full border shadow" />
                             <div>
-                                <h2 class="text-xl font-semibold text-indigo-700">{{ $student->name }}</h2>
+                                <h2 class="text-xl font-sans text-indigo-700">{{ $student->name }}</h2>
                                 <p class="text-sm text-gray-500">{{ $student->email }}</p>
                                 <p class="text-sm text-gray-500 mt-1">📚 Boeken gelezen: {{ $student->books_read->count() }}</p>
                             </div>
@@ -40,7 +40,7 @@
 
                         @if($student->books_read->count())
                             <div>
-                                <h3 class="text-sm font-semibold text-indigo-500 mb-2">📘 Gelezen boeken:</h3>
+                                <h3 class="text-sm font-sans text-indigo-500 mb-2">📘 Gelezen boeken:</h3>
                                 <ul class="space-y-2">
                                     @foreach($student->books_read as $book)
                                         <li class="flex justify-between text-sm text-gray-700 bg-gray-100 rounded-xl px-4 py-2">

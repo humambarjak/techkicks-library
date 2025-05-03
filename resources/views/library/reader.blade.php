@@ -1,5 +1,7 @@
 <audio id="flip-sound" src="{{ asset('sounds/page-flip.mp3') }}"></audio>
 <audio id="bg-music" src="{{ asset('sounds/reading-music.mp3') }}" autoplay loop></audio>
+<audio id="rain-music" src="{{ asset('sounds/rain.mp3') }}" loop></audio>
+<audio id="fire-music" src="{{ asset('sounds/fireplace.mp3') }}" loop></audio>
 <audio id="milestone-sound" src="{{ asset('sounds/ding.mp3') }}"></audio>
 
 <!-- Motivation Toast -->
@@ -9,6 +11,11 @@
 
 <!-- Milestone Toast -->
 <div id="milestone-toast" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white text-indigo-700 border-4 border-yellow-400 px-8 py-5 rounded-2xl shadow-xl font-bold text-lg hidden z-50 text-center animate-bounce-in"></div>
+
+<div id="rating-toast" class="fixed bottom-8 right-6 bg-green-100 border border-green-400 text-green-800 px-6 py-3 rounded-xl shadow-lg hidden z-50 transition-all duration-300 ease-in-out">
+    ✅ Bedankt voor je beoordeling!
+</div>
+
 
 <x-app-layout>
 <div class="min-h-screen bg-gradient-to-r from-purple-100 via-blue-100 to-pink-100 py-12 px-4">
@@ -22,15 +29,24 @@
     </a>
 
     <div class="max-w-5xl mx-auto flex flex-col md:flex-row gap-6 items-start">
-        <!-- Cover & Music -->
-        <div class="hidden md:flex flex-col items-center w-32 flex-shrink-0">
-            <img src="{{ asset('storage/' . $book->cover_image) }}" alt="Book Cover"
-                 class="rounded-lg shadow-md border border-indigo-200" />
-            <p class="text-center text-xs text-gray-500 mt-2">📘 {{ $book->title }}</p>
-            <button id="musicToggle" class="mt-4 bg-white/90 text-indigo-700 px-3 py-1 rounded-full shadow border border-indigo-300 hover:bg-indigo-100 transition hover:scale-105 text-sm">
-                🔊 Muziek
-            </button>
-        </div>
+       <!-- Cover & Music -->
+<div class="hidden md:flex flex-col items-center w-32 flex-shrink-0">
+    <img src="{{ asset('storage/' . $book->cover_image) }}" alt="Book Cover"
+         class="rounded-lg shadow-md border border-indigo-200" />
+    <p class="text-center text-xs text-gray-500 mt-2">📘 {{ $book->title }}</p>
+
+    <!-- Music toggle -->
+    <button id="musicToggle" class="mt-4 bg-white/90 text-indigo-700 px-3 py-1 rounded-full shadow border border-indigo-300 hover:bg-indigo-100 transition hover:scale-105 text-sm">
+        🔊 Muziek
+    </button>
+
+    <!-- Music options -->
+    <div class="mt-2 space-y-1 text-center text-sm">
+        <button class="music-option bg-indigo-100 hover:bg-indigo-200 px-3 py-1 rounded-full" data-sound="bg-music">🎵 Klassiek</button>
+        <button class="music-option bg-indigo-100 hover:bg-indigo-200 px-3 py-1 rounded-full" data-sound="rain-music">🌧️ Regen</button>
+        <button class="music-option bg-indigo-100 hover:bg-indigo-200 px-3 py-1 rounded-full" data-sound="fire-music">🔥 Open haard</button>
+    </div>
+</div>
 
         <!-- PDF Area -->
         <div class="flex-1 flex flex-col items-center">
@@ -50,7 +66,8 @@
                 <div class="inline-flex items-center gap-2">
                     @for($i = 1; $i <= 5; $i++)
                     <label>
-                        <input type="radio" name="rating" value="{{ $i }}" class="hidden" onchange="this.form.submit()" />
+                    <input type="radio" name="rating" value="{{ $i }}" class="hidden" onclick="submitRating({{ $book->id }}, {{ $i }})" />
+
                         <span class="text-3xl cursor-pointer hover:scale-110 transition transform duration-200">⭐</span>
                     </label>
                     @endfor
@@ -97,6 +114,15 @@
             50% { opacity: 1; transform: translateY(-5px) scale(1.05); }
             100% { transform: translateY(0) scale(1); }
         }
+        @keyframes bounce-in {
+    0% { opacity: 0; transform: translateY(20px) scale(0.9); }
+    50% { opacity: 1; transform: translateY(-5px) scale(1.05); }
+    100% { transform: translateY(0) scale(1); }
+}
+.animate-bounce-in {
+    animation: bounce-in 0.6s ease-out;
+}
+
     </style>
 
     <!-- Scripts -->
@@ -186,28 +212,91 @@
         loadPDF();
     </script>
 
-    <script>
-        const music = document.getElementById("bg-music");
-        const toggleBtn = document.getElementById("musicToggle");
-        let isMuted = false;
+<script>
+    const sounds = {
+        "bg-music": document.getElementById("bg-music"),
+        "rain-music": document.getElementById("rain-music"),
+        "fire-music": document.getElementById("fire-music")
+    };
 
-        toggleBtn.addEventListener("click", () => {
-            isMuted = !isMuted;
-            music.muted = isMuted;
-            toggleBtn.textContent = isMuted ? "🔇 Muziek" : "🔊 Muziek";
+    let currentSound = sounds["bg-music"];
+    currentSound.volume = 0;
+    currentSound.play();
+
+    // Fade in volume
+    let vol = 0;
+    const fadeInterval = setInterval(() => {
+        if (vol < 0.4) {
+            vol += 0.01;
+            currentSound.volume = vol;
+        } else {
+            clearInterval(fadeInterval);
+        }
+    }, 80);
+
+    const toggleBtn = document.getElementById("musicToggle");
+    let isMuted = false;
+
+    toggleBtn.addEventListener("click", () => {
+        isMuted = !isMuted;
+        currentSound.muted = isMuted;
+        toggleBtn.textContent = isMuted ? "🔇 Muziek" : "🔊 Muziek";
+    });
+
+    document.querySelectorAll(".music-option").forEach(button => {
+        button.addEventListener("click", () => {
+            const newSoundId = button.getAttribute("data-sound");
+
+            // Stop current sound
+            currentSound.pause();
+            currentSound.currentTime = 0;
+
+            // Start selected sound
+            currentSound = sounds[newSoundId];
+            currentSound.volume = 0.4;
+            currentSound.muted = isMuted;
+            currentSound.play();
         });
+    });
+</script>
+<!-- test -->
+<script>
+    function submitRating(bookId, rating) {
+        fetch(`/books/${bookId}/rate`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ rating })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                const toast = document.getElementById("rating-toast");
+                toast.classList.remove("hidden");
+                toast.classList.add("animate-bounce-in");
 
-        music.volume = 0;
-        let vol = 0;
-        const fadeInterval = setInterval(() => {
-            if (vol < 0.4) {
-                vol += 0.01;
-                music.volume = vol;
-            } else {
-                clearInterval(fadeInterval);
+                setTimeout(() => {
+                    toast.classList.add("hidden");
+                }, 2000);
             }
-        }, 80);
-    </script>
+        })
+        .catch(() => {
+            const toast = document.getElementById("rating-toast");
+            toast.textContent = "❌ Oeps! Er ging iets mis.";
+            toast.classList.remove("hidden");
+            toast.classList.add("bg-red-100", "border-red-400", "text-red-700");
+
+            setTimeout(() => {
+                toast.classList.add("hidden");
+            }, 2500);
+        });
+    }
+</script>
+
+
+
 
     <script>
         const savedNotes = @json($notes);

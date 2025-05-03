@@ -29,8 +29,9 @@ class BookController extends Controller
             'description' => 'nullable|string',
             'cover_image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
             'pdf_file' => 'required|mimes:pdf|max:10000',
-            'category' => 'required|in:Stories,Science,Comics,Adventure,History',
+            'level' => 'required|in:AVI1,AVI2,AVI3,AVI4,AVI5,AVI6', // Make level required instead
         ]);
+        
 
         \Log::info('🪵 Full request payload:', $request->all());
 
@@ -43,10 +44,10 @@ class BookController extends Controller
             'cover_image' => $coverPath,
             'pdf_file' => $pdfPath,
             'user_id' => auth()->id(),
-            'category' => $request->category,
             'is_special' => $request->has('is_special'),
             'level' => $request->level,
         ]);
+        
 
         \Log::info($book->is_special ? '✅ Book is saved as SPECIAL' : '❌ Book is NOT marked special');
         \Log::info('📚 Book created:', $book->toArray());
@@ -91,7 +92,8 @@ class BookController extends Controller
     {
         $book = Book::findOrFail($id);
 
-        $data = $request->only(['title', 'description', 'category', 'level']);
+        $data = $request->only(['title', 'description', 'level']);
+
 
         if ($request->hasFile('cover_image')) {
             $data['cover_image'] = $request->file('cover_image')->store('covers', 'public');
@@ -225,18 +227,17 @@ class BookController extends Controller
     }
 
     public function rate(Request $request, Book $book)
-    {
-        $request->validate([
-            'rating' => 'required|integer|min:1|max:5',
-        ]);
+{
+    $validated = $request->validate([
+        'rating' => 'required|integer|min:1|max:5',
+    ]);
 
-        $user = auth()->user();
+    $book->ratings()->updateOrCreate(
+        ['user_id' => auth()->id()],
+        ['rating' => $validated['rating']]
+    );
 
-        $user->ratings()->updateOrCreate(
-            ['book_id' => $book->id],
-            ['rating' => $request->rating]
-        );
+    return response()->json(['success' => true]);
+}
 
-        return back()->with('success', 'Dank je voor je beoordeling!');
-    }
 }

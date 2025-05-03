@@ -88,14 +88,21 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::post('/save-journal', function (Request $request) {
+    $content = $request->input('content');
+    $emojiList = ['👍', '❤️', '🤯', '👎'];
+
     JournalEntry::create([
         'user_id' => auth()->id(),
-        'content' => $request->input('content'),
+        'content' => in_array($content, $emojiList) ? '' : $content,
+        'emoji' => in_array($content, $emojiList) ? $content : null,
         'date' => now(),
     ]);
 
     return response()->json(['success' => true]);
 })->middleware('auth')->name('journal.save');
+
+
+
 
 /*
 |--------------------------------------------------------------------------
