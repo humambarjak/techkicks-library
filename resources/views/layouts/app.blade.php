@@ -79,8 +79,9 @@
 
 <body class="@yield('page-background', 'bg-animated-pattern')" >
 @if(Auth::check() && Auth::user()->role === 'student')
-<div id="falling-stars font-sans"></div>
+<div id="falling-stars"></div>
 @endif
+
 
     <div class="min-h-screen @yield('page-background', 'bg-gradient-to-br from-blue-100 via-green-100 to-yellow-100')">
 

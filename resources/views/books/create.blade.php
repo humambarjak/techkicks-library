@@ -208,7 +208,7 @@
             <div>
                 <label class="flex items-center gap-2">
                     <input type="checkbox" name="is_special" value="1" class="rounded text-indigo-600 transition">
-                    <span class="text-sm text-gray-700">✨ Markeer als speciaal boek</span>
+                    <span class="text-sm text-gray-700"> Markeer als speciaal boek</span>
                 </label>
             </div>
 

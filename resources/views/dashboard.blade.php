@@ -386,28 +386,28 @@
             .bot-btn:hover {
                 background-color: #4f46e5; /* indigo-600 */
             }
-            .emoji-button {
-    font-size: 2.2rem;
-    transition: transform 0.2s ease;
-    background-color: white;
-    border-radius: 50%;
-    padding: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
+          .emoji-button {
+         font-size: 2.2rem;
+            transition: transform 0.2s ease;
+             background-color: white;
+             border-radius: 50%;
+            padding: 10px;
+             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            }
 
-    .emoji-button:hover {
-        transform: scale(1.3);
-        background-color: #e0e7ff; /* light indigo background */
-    }
-    .emoji-button.clicked {
-        animation: pop 0.3s ease;
-    }
+            .emoji-button:hover {
+             transform: scale(1.3);
+             background-color: #e0e7ff; /* light indigo background */
+            }
+         .emoji-button.clicked {
+          animation: pop 0.3s ease;
+             }
 
-    @keyframes pop {
-        0% { transform: scale(1); }
+         @keyframes pop {
+         0% { transform: scale(1); }
         50% { transform: scale(1.6); }
         100% { transform: scale(1); }
-    }
+         }
 
         .emoji-button:active {
             transform: scale(1.1);
@@ -416,6 +416,7 @@
             outline: none;
             box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.5); /* indigo-500 */
         }
+        
     </style>
 
     <!-- script for  it  -->
@@ -561,7 +562,26 @@
     </div> -->
 
     <!--test  -->
-    
+    <script>
+document.addEventListener("DOMContentLoaded", () => {
+    const starsContainer = document.getElementById("falling-stars");
+    if (!starsContainer) return;
+
+    function createStarOrBubble() {
+        const el = document.createElement("div");
+        el.classList.add(Math.random() > 0.5 ? 'star' : 'bubble');
+        el.style.left = Math.random() * 100 + "vw";
+        el.style.animationDuration = (Math.random() * 7 + 8) + "s";
+        el.innerHTML = Math.random() > 0.5 ? "⭐" : "🔵";
+        starsContainer.appendChild(el);
+
+        setTimeout(() => el.remove(), 12000);
+    }
+
+    setInterval(createStarOrBubble, 500);
+});
+</script>
+
     
 
 </x-app-layout>

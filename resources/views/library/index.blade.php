@@ -6,30 +6,25 @@
     📖 Welkom, {{ Auth::user()->name }}. Tijd om te lezen 
     </h1>
     
-<!-- 🦊 Fixed Animated Mascot - Top Right Corner -->
-<div class="fixed top-6 right-6 z-30 flex flex-col items-center animate-flip-fox">
-    <div class="text-5xl">🦊</div>
-    <p class="text-indigo-600 font-semibold text-xs mt-1 bg-white/70 px-2 py-1 rounded-full shadow">
-        Ik zoek boeken met jou mee!
-    </p>
-</div>
-
-
-
-<div class="bg-yellow-50 text-yellow-900 border border-yellow-300 rounded-xl p-4 text-sm text-center shadow mb-6 max-w-md mx-auto animate-fade-in" id="factBox">
-    📚 <span id="funFact">Wist je dat het langste kinderboek ooit 1000 pagina's had?</span>
-</div>
-
-
-    @section('styles')
-        <style>
-            header.bg-white {
-                background-color: transparent !important;
-                box-shadow: none !important;
-            }
-        </style>
-    @endsection
-    \
+        <!-- 🦊 Fixed Animated Mascot - Top Right Corner -->
+        <div class="fixed top-6 right-6 z-30 flex flex-col items-center animate-flip-fox">
+            <div class="text-5xl"><img src="{{ asset('images/Tech.png') }}" alt="TechKicks Logo" class="h-10 w-auto"></div>
+            <p class="text-indigo-600 font-semibold text-xs mt-1 bg-white/70 px-2 py-1 rounded-full shadow">
+                Ik zoek boeken met jou mee!
+            </p>
+        </div>
+        <div class="bg-yellow-50 text-yellow-900 border border-yellow-300 rounded-xl p-4 text-sm text-center shadow mb-6 max-w-md mx-auto animate-fade-in" id="factBox">
+            📚 <span id="funFact">Wist je dat het langste kinderboek ooit 1000 pagina's had?</span>
+        </div>
+        @section('styles')
+            <style>
+                header.bg-white {
+                    background-color: transparent !important;
+                    box-shadow: none !important;
+                }
+            </style>
+        @endsection
+    
         <!-- 🔍 Category Filter -->
         <form method="GET" action="{{ route('library.index') }}" class="mb-6 max-w-sm mx-auto">
             <label for="category" class="block text-lg mb-2 text-gray-800">Filter op categorie:</label>
@@ -79,226 +74,226 @@
                             </p>
                         @endif
 
-                        <form method="POST" action="{{ route('books.favorite', $book) }}">
-    @csrf
-    <button type="submit" class="favorite-button">
-        <span>
-            {{ auth()->user()->favoriteBooks->contains($book) ? 'Niet meer favoriet' : 'Favoriet' }}
-        </span>
-    </button>
-</form>
-                    </div>
-                </div>
-            @endforeach
-        </div>
+                                            <form method="POST" action="{{ route('books.favorite', $book) }}">
+                        @csrf
+                        <button type="submit" class="favorite-button">
+                            <span>
+                                {{ auth()->user()->favoriteBooks->contains($book) ? 'Niet meer favoriet' : 'Favoriet' }}
+                            </span>
+                        </button>
+                    </form>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
 
-        @if($books->isEmpty())
-            <p class="text-center text-gray-600 mt-10 text-lg">😕 Geen boeken gevonden in deze categorie.</p>
-        @endif
+                            @if($books->isEmpty())
+                                <p class="text-center text-gray-600 mt-10 text-lg">😕 Geen boeken gevonden in deze categorie.</p>
+                            @endif
 
-        <!-- 🎉 Centered Toast -->
-        <div id="toast"
-             class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
-                    bg-white text-indigo-700 border-4 border-yellow-400 px-8 py-5 
-                    rounded-2xl shadow-xl font-sans text-lg hidden z-50 text-center animate-bounce-in">
-            🎉 Goede keuze! Veel leesplezier!
-        </div>
+                            <!-- 🎉 Centered Toast -->
+                            <div id="toast"
+                                class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+                                        bg-white text-indigo-700 border-4 border-yellow-400 px-8 py-5 
+                                        rounded-2xl shadow-xl font-sans text-lg hidden z-50 text-center animate-bounce-in">
+                                🎉 Goede keuze! Veel leesplezier!
+                            </div>
 
-        <!-- JavaScript for Toast & Animation -->
-        <script>
-            function handleBookChoice(event, button) {
-                event.preventDefault();
+                        <!-- JavaScript for Toast & Animation -->
+                        <script>
+                            function handleBookChoice(event, button) {
+                                event.preventDefault();
 
-                const card = button.closest('.book-card');
-                const toast = document.getElementById('toast');
+                                const card = button.closest('.book-card');
+                                const toast = document.getElementById('toast');
 
-                const messages = [
-                    "🎉 Goede keuze! Veel leesplezier!",
-                    "📘 Dit boek wordt spannend!",
-                    "🥳 Veel leesplezier!",
-                    "✨ Je leestalent groeit!",
-                    "📚 Tijd voor avontuur!",
-                    "🚀 Klaar voor een nieuw verhaal?"
-                ];
-                const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-                toast.textContent = randomMessage;
+                                const messages = [
+                                    "🎉 Goede keuze! Veel leesplezier!",
+                                    "📘 Dit boek wordt spannend!",
+                                    "🥳 Veel leesplezier!",
+                                    "✨ Je leestalent groeit!",
+                                    "📚 Tijd voor avontuur!",
+                                    "🚀 Klaar voor een nieuw verhaal?"
+                                ];
+                                const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                                toast.textContent = randomMessage;
 
-                card.classList.add('animate-spin-book');
-                toast.classList.remove('hidden');
-                toast.classList.add('animate-bounce-in');
+                                card.classList.add('animate-spin-book');
+                                toast.classList.remove('hidden');
+                                toast.classList.add('animate-bounce-in');
 
-                setTimeout(() => {
-                    toast.classList.add('hidden');
-                }, 2000);
+                                setTimeout(() => {
+                                    toast.classList.add('hidden');
+                                }, 2000);
 
-                setTimeout(() => {
-                    window.location.href = button.href;
-                }, 1200);
-            }
-            document.addEventListener("DOMContentLoaded", () => {
-    const facts = [
-        "Wist je dat het langste kinderboek ooit 1000 pagina's had?",
-        "Boeken lezen helpt je woordenschat groeien 📖",
-        "🦸‍♂️ Superheldenverhalen zijn populair bij AVI 3!",
-        "📘 Elke dag 10 minuten lezen = 1 boek per maand!",
-    ];
-    const factBox = document.getElementById("funFact");
-    let index = 0;
-    setInterval(() => {
-        index = (index + 1) % facts.length;
-        factBox.textContent = facts[index];
-    }, 5000);
-});
-        </script>
+                                setTimeout(() => {
+                                    window.location.href = button.href;
+                                }, 1200);
+                            }
+                     document.addEventListener("DOMContentLoaded", () => {
+                    const facts = [
+                        "Wist je dat het langste kinderboek ooit 1000 pagina's had?",
+                        "Boeken lezen helpt je woordenschat groeien 📖",
+                        "🦸‍♂️ Superheldenverhalen zijn populair bij AVI 3!",
+                        "📘 Elke dag 10 minuten lezen = 1 boek per maand!",
+                    ];
+                    const factBox = document.getElementById("funFact");
+                    let index = 0;
+                    setInterval(() => {
+                        index = (index + 1) % facts.length;
+                        factBox.textContent = facts[index];
+                    }, 5000);
+                });
+             </script>
 
-        <!-- 🖌️ All Styling -->
-        <style>
-            @keyframes bounce-in {
-                0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
-                50% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
-                100% { transform: translate(-50%, -50%) scale(1); }
-            }
-            .animate-bounce-in {
-                animation: bounce-in 0.6s ease-out;
-            }
+            <!-- 🖌️ All Styling -->
+            <style>
+                @keyframes bounce-in {
+                    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+                    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
+                    100% { transform: translate(-50%, -50%) scale(1); }
+                }
+                .animate-bounce-in {
+                    animation: bounce-in 0.6s ease-out;
+                }
 
-            @keyframes spin-book {
-                0% { transform: rotateY(0); }
-                50% { transform: rotateY(180deg); }
-                100% { transform: rotateY(0); }
-            }
-            .animate-spin-book {
-                animation: spin-book 0.8s ease-in-out;
-            }
+                @keyframes spin-book {
+                    0% { transform: rotateY(0); }
+                    50% { transform: rotateY(180deg); }
+                    100% { transform: rotateY(0); }
+                }
+                .animate-spin-book {
+                    animation: spin-book 0.8s ease-in-out;
+                }
 
-            @keyframes wiggle {
-                0%, 100% { transform: rotate(0); }
-                50% { transform: rotate(2deg); }
-            }
-            .animate-wiggle {
-                animation: wiggle 0.6s ease-in-out infinite;
-            }
+                @keyframes wiggle {
+                    0%, 100% { transform: rotate(0); }
+                    50% { transform: rotate(2deg); }
+                }
+                .animate-wiggle {
+                    animation: wiggle 0.6s ease-in-out infinite;
+                }
 
-            @keyframes dance {
-                0%, 100% { transform: scale(1) rotate(0); }
-                25% { transform: scale(1.05) rotate(-2deg); }
-                50% { transform: scale(1.1) rotate(2deg); }
-                75% { transform: scale(1.05) rotate(-1deg); }
-            }
-            .animate-dance {
-                animation: dance 2.5s ease-in-out infinite;
-            }
+                @keyframes dance {
+                    0%, 100% { transform: scale(1) rotate(0); }
+                    25% { transform: scale(1.05) rotate(-2deg); }
+                    50% { transform: scale(1.1) rotate(2deg); }
+                    75% { transform: scale(1.05) rotate(-1deg); }
+                }
+                .animate-dance {
+                    animation: dance 2.5s ease-in-out infinite;
+                }
 
-            @keyframes glow {
-                0%, 100% { text-shadow: 0 0 8px #c4b5fd; }
-                50% { text-shadow: 0 0 20px #8b5cf6; }
-            }
-            .glow-text {
-                animation: glow 2s ease-in-out infinite;
-            }
+                @keyframes glow {
+                    0%, 100% { text-shadow: 0 0 8px #c4b5fd; }
+                    50% { text-shadow: 0 0 20px #8b5cf6; }
+                }
+                .glow-text {
+                    animation: glow 2s ease-in-out infinite;
+                }
 
-            .floating-books-bg {
-                position: fixed;
-                bottom: -2rem;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                pointer-events: none;
-                overflow: hidden;
-                z-index: 0;
-            }
+                .floating-books-bg {
+                    position: fixed;
+                    bottom: -2rem;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    pointer-events: none;
+                    overflow: hidden;
+                    z-index: 0;
+                }
 
-            .floating-books-bg span {
-                position: absolute;
-                font-size: 1.5rem;
-                animation: float-up 10s linear infinite;
-                opacity: 0.3;
-            }
+                .floating-books-bg span {
+                    position: absolute;
+                    font-size: 1.5rem;
+                    animation: float-up 10s linear infinite;
+                    opacity: 0.3;
+                }
 
-            @keyframes float-up {
-                0% { transform: translateY(100vh) rotate(0deg); }
-                100% { transform: translateY(-10vh) rotate(360deg); }
-            }
+                @keyframes float-up {
+                    0% { transform: translateY(100vh) rotate(0deg); }
+                    100% { transform: translateY(-10vh) rotate(360deg); }
+                }
             .favorite-button {
-  padding: 5px 15px 5px 10px; /* smaller and tighter */
-  border-radius: 10px;
-  box-shadow: 0px 0px 5px 5px #e7413373;
-  background-color: #e74133;
-  color: white;
-  font-size: 14px; /* smaller text */
-  border: none;
-  display: inline-flex; /* ✅ fix inline with text */
-  align-items: center;
-  transition: all .5s ease-in-out;
-  letter-spacing: 1px;
-  margin-top: 8px;
-}
+                padding: 5px 15px 5px 10px; /* smaller and tighter */
+                border-radius: 10px;
+                box-shadow: 0px 0px 5px 5px #e7413373;
+                background-color: #e74133;
+                color: white;
+                font-size: 14px; /* smaller text */
+                border: none;
+                display: inline-flex; /* ✅ fix inline with text */
+                align-items: center;
+                transition: all .5s ease-in-out;
+                letter-spacing: 1px;
+                margin-top: 8px;
+                }
 
-.favorite-button:hover {
-  background-color: #f54d3e;
-  transition: all .5s ease-in-out;
-  box-shadow: 0px 0px 5px 3px #e7413373;
-}
+                .favorite-button:hover {
+                background-color: #f54d3e;
+                transition: all .5s ease-in-out;
+                box-shadow: 0px 0px 5px 3px #e7413373;
+                }
 
-.favorite-button::before {
-  content: "";
-  background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNzUycHQiIGhlaWdodD0iNzUycHQiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDc1MiA3NTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiA8cGF0aCBkPSJtMzc2LjMyIDU1Mi4zYy0wLjM4NjcyIDAtMC43ODEyNS0wLjAxNTYyNS0xLjE3MTktMC4wNTA3ODEtMS4wNzgxLTAuMDc0MjE5LTIuMTM2Ny0wLjI2NTYyLTMuMTU2Mi0wLjU0Njg4LTIuNzMwNS0wLjU5Mzc1LTUuMjkzLTEuODUxNi03LjM0MzgtMy43ODEybC0xMzcuNTQtMTI5LjY2Yy00NC40NTMtNDEuOTAyLTQ5LjQ4LTExNS40Ni0xMS4yMTUtMTYzLjk3IDE5LjA4Mi0yNC4xODQgNDUuNzctMzguNjk1IDc1LjE1Mi00MC44NTUgMjguOTMtMi4xMTcyIDU2Ljg2MyA4LjAzMTIgNzguNjggMjguNTk4bDYuMjY1NiA1LjkwMjMgNi4yNjU2LTUuOTAyM2MyMS44MzItMjAuNTcgNDkuODA1LTMwLjY5MSA3OC42OTEtMjguNTk4IDI5LjM4MyAyLjE2NDEgNTYuMDY2IDE2LjY3NiA3NS4xNDUgNDAuODU1IDM4LjI2MiA0OC41MTIgMzMuMjM0IDEyMi4wNy0xMS4yMTUgMTYzLjk3bC0xMzcuNTQgMTI5LjY3Yy0yLjk5MjIgMi44MTY0LTYuOTM3NSA0LjM3NS0xMS4wMjMgNC4zNzV6IiBmaWxsPSIjZmZmIi8+Cjwvc3ZnPgo=");
-  background-size: 18px 18px;
-  background-repeat: no-repeat;
-  color: transparent;
-  position: relative;
-  width: 20px;
-  height: 20px;
-  display: block;
-  margin-right: 5px;
-  transition: all .5s ease-in-out;
-}
+                .favorite-button::before {
+                content: "";
+                background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNzUycHQiIGhlaWdodD0iNzUycHQiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDc1MiA3NTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiA8cGF0aCBkPSJtMzc2LjMyIDU1Mi4zYy0wLjM4NjcyIDAtMC43ODEyNS0wLjAxNTYyNS0xLjE3MTktMC4wNTA3ODEtMS4wNzgxLTAuMDc0MjE5LTIuMTM2Ny0wLjI2NTYyLTMuMTU2Mi0wLjU0Njg4LTIuNzMwNS0wLjU5Mzc1LTUuMjkzLTEuODUxNi03LjM0MzgtMy43ODEybC0xMzcuNTQtMTI5LjY2Yy00NC40NTMtNDEuOTAyLTQ5LjQ4LTExNS40Ni0xMS4yMTUtMTYzLjk3IDE5LjA4Mi0yNC4xODQgNDUuNzctMzguNjk1IDc1LjE1Mi00MC44NTUgMjguOTMtMi4xMTcyIDU2Ljg2MyA4LjAzMTIgNzguNjggMjguNTk4bDYuMjY1NiA1LjkwMjMgNi4yNjU2LTUuOTAyM2MyMS44MzItMjAuNTcgNDkuODA1LTMwLjY5MSA3OC42OTEtMjguNTk4IDI5LjM4MyAyLjE2NDEgNTYuMDY2IDE2LjY3NiA3NS4xNDUgNDAuODU1IDM4LjI2MiA0OC41MTIgMzMuMjM0IDEyMi4wNy0xMS4yMTUgMTYzLjk3bC0xMzcuNTQgMTI5LjY3Yy0yLjk5MjIgMi44MTY0LTYuOTM3NSA0LjM3NS0xMS4wMjMgNC4zNzV6IiBmaWxsPSIjZmZmIi8+Cjwvc3ZnPgo=");
+                background-size: 18px 18px;
+                background-repeat: no-repeat;
+                color: transparent;
+                position: relative;
+                width: 20px;
+                height: 20px;
+                display: block;
+                margin-right: 5px;
+                transition: all .5s ease-in-out;
+                }
 
-.favorite-button:hover::before {
-  background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNzUycHQiIGhlaWdodD0iNzUycHQiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDc1MiA3NTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiA8cGF0aCBkPSJtMzY5Ljg0IDU1MC4yOGMwLjQ3MjY2IDAuNDcyNjYgMC45NDUzMSAwLjQ3MjY2IDAuOTQ1MzEgMC45NDUzMSA2NS4zNTUtNTEuNjIxIDE5My43LTE0OC4yMyAxOTMuNy0yNDkuMTEgMC01NS44ODMtNDUuNDY1LTEwMS4zNS0xMDEuMzUtMTAxLjM1LTM5Ljc4MSAwLTc0LjM1MiAyMy4yMDctOTAuOTI2IDU2LjgyOC0wLjQ3MjY2IDAuOTQ1MzEtMS40MjE5IDMuMzE2NC0xLjQyMTkgMy4zMTY0cy0wLjk0NTMxLTEuODk0NS0wLjk0NTMxLTIuMzY3MmMtMTYuMTAyLTM0LjA5LTUwLjY3Mi01Ny43Ny05MC45MjYtNTcuNzctNTUuODgzIDAtMTAxLjM1IDQ1LjQ2MS0xMDEuMzUgMTAxLjM0IDAgMTAxLjgyIDEyNy44NyAxOTcuMDEgMTkyLjI3IDI0OC4xNnoiIGZpbGw9IiNmZmYiLz4KPC9zdmc+Cg==");
-  transition: all .5s ease-in-out;
-  transform: rotate(-1turn);
-}
+                .favorite-button:hover::before {
+                background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNzUycHQiIGhlaWdodD0iNzUycHQiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDc1MiA3NTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiA8cGF0aCBkPSJtMzY5Ljg0IDU1MC4yOGMwLjQ3MjY2IDAuNDcyNjYgMC45NDUzMSAwLjQ3MjY2IDAuOTQ1MzEgMC45NDUzMSA2NS4zNTUtNTEuNjIxIDE5My43LTE0OC4yMyAxOTMuNy0yNDkuMTEgMC01NS44ODMtNDUuNDY1LTEwMS4zNS0xMDEuMzUtMTAxLjM1LTM5Ljc4MSAwLTc0LjM1MiAyMy4yMDctOTAuOTI2IDU2LjgyOC0wLjQ3MjY2IDAuOTQ1MzEtMS40MjE5IDMuMzE2NC0xLjQyMTkgMy4zMTY0cy0wLjk0NTMxLTEuODk0NS0wLjk0NTMxLTIuMzY3MmMtMTYuMTAyLTM0LjA5LTUwLjY3Mi01Ny43Ny05MC45MjYtNTcuNzctNTUuODgzIDAtMTAxLjM1IDQ1LjQ2MS0xMDEuMzUgMTAxLjM0IDAgMTAxLjgyIDEyNy44NyAxOTcuMDEgMTkyLjI3IDI0OC4xNnoiIGZpbGw9IiNmZmYiLz4KPC9zdmc+Cg==");
+                transition: all .5s ease-in-out;
+                transform: rotate(-1turn);
+                }
 
-@keyframes bounce-slow {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
+                @keyframes bounce-slow {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-10px); }
+                }
 
-.animate-bounce-slow {
-  animation: bounce-slow 2.5s infinite ease-in-out;
-}
-.book-card {
-  position: relative;
-  overflow: hidden;
-}
-.book-card::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(135deg, rgba(255,255,255,0.05), transparent);
-  animation: shimmer-bg 8s linear infinite;
-  pointer-events: none;
-  z-index: 0;
-}
-@keyframes shimmer-bg {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-@keyframes flip-fox {
-  0% { transform: rotateY(0deg); }
-  25% { transform: rotateY(180deg); }
-  50% { transform: rotateY(0deg) translateY(-8px); }
-  75% { transform: rotateY(180deg) translateY(4px); }
-  100% { transform: rotateY(0deg); }
-}
-.animate-flip-fox {
-  animation: flip-fox 6s infinite ease-in-out;
-}
+                .animate-bounce-slow {
+                animation: bounce-slow 2.5s infinite ease-in-out;
+                }
+                .book-card {
+                position: relative;
+                overflow: hidden;
+                }
+                .book-card::before {
+                content: "";
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: linear-gradient(135deg, rgba(255,255,255,0.05), transparent);
+                animation: shimmer-bg 8s linear infinite;
+                pointer-events: none;
+                z-index: 0;
+                }
+                @keyframes shimmer-bg {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+                }
+                @keyframes flip-fox {
+                0% { transform: rotateY(0deg); }
+                25% { transform: rotateY(180deg); }
+                50% { transform: rotateY(0deg) translateY(-8px); }
+                75% { transform: rotateY(180deg) translateY(4px); }
+                100% { transform: rotateY(0deg); }
+                }
+                .animate-flip-fox {
+                animation: flip-fox 6s infinite ease-in-out;
+                }
 
-        </style>
-    </div>
+         </style>
+      </div>
 </x-app-layout>

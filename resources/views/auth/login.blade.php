@@ -13,48 +13,60 @@
 
             <form method="POST" action="{{ route('login') }}">
                 @csrf
+<!-- Email -->
+<div class="mb-4">
+    <label for="email" class="block text-sm font-sans text-gray-700">Emailadres</label>
+    <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus
+        class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent">
 
-                <!-- Email -->
-                <div class="mb-4">
-                    <label for="email" class="block text-sm font-sans text-gray-700">Emailadres</label>
-                    <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus
-                        class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent">
-                </div>
+    @error('email')
+        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+    @enderror
+</div>
 
-                <!-- Password -->
-                <div class="mb-4">
-                    <label for="password" class="block text-sm font-sans text-gray-700">Wachtwoord</label>
-                    <input id="password" type="password" name="password" required
-                        class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent">
-                </div>
+<!-- Password -->
+<div class="mb-4">
+    <label for="password" class="block text-sm font-sans text-gray-700">Wachtwoord</label>
+    <input id="password" type="password" name="password" required
+        class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent">
 
-                <!-- Remember Me & Forgot -->
-                <div class="flex items-center justify-between mb-6">
-                    <label class="flex items-center">
-                        <input type="checkbox" name="remember" class="text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
-                        <span class="ml-2 text-sm font-sans text-gray-600">Onthoud mij</span>
-                    </label>
+    @error('password')
+        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+    @enderror
+</div>
 
-                    @if (Route::has('password.request'))
-                        <a class="text-sm text-blue-600 font-sans hover:underline" href="{{ route('password.request') }}">
-                            Wachtwoord vergeten?
-                        </a>
-                    @endif
-                </div>
+<!-- Global Auth Errors (like incorrect credentials) -->
+@if ($errors->has('email'))
+    <p class="text-red-600 text-sm mb-4 text-center font-semibold">
+        📛 {{ $errors->first('email') }}
+    </p>
+@endif
 
-              <!-- 🌟 New Fancy Blue Button with Green Hover -->
-              <button type="submit" class="buttonpro w-full mt-2 font-sans">
-                <span>Inloggen</span>
-              </button>
-                </form>
+<!-- Remember Me & Forgot -->
+<div class="flex items-center justify-between mb-6">
+    <label class="flex items-center">
+        <input type="checkbox" name="remember" class="text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+        <span class="ml-2 text-sm font-sans text-gray-600">Onthoud mij</span>
+    </label>
 
-            <!-- Register Prompt -->
-            <p class="mt-6 text-sm text-center font-sans text-gray-500">
-                Nog geen account?
-                <a href="{{ route('register') }}" class="text-blue-600 font-sans hover:underline">Registreer hier</a>
-            </p>
-        </div>
-    </div>
+    @if (Route::has('password.request'))
+        <a class="text-sm text-blue-600 font-sans hover:underline" href="{{ route('password.request') }}">
+            Wachtwoord vergeten?
+        </a>
+    @endif
+</div>
+
+<!-- 🌟 New Fancy Blue Button with Green Hover -->
+<button type="submit" class="buttonpro w-full mt-2 font-sans">
+    <span>Inloggen</span>
+</button>
+</form>
+
+<!-- Register Prompt -->
+<p class="mt-6 text-sm text-center font-sans text-gray-500">
+    Nog geen account?
+    <a href="{{ route('register') }}" class="text-blue-600 font-sans hover:underline">Registreer hier</a>
+</p>
 
    <!-- 🌟 Custom Button CSS -->
 <style>
@@ -150,6 +162,18 @@
   95% { content: "2"; }
   100% { content: ""; }
 }
+.text-red-500 {
+    color: #e3342f;
+    font-weight: 500;
+    font: 1em sans-serif;
+}
+
+.text-red-600 {
+    color: #cc1f1a;
+    font-weight: 600;
+    font: 1em sans-serif;
+}
+
 </style>
 
 </x-guest-layout>

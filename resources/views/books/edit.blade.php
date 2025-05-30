@@ -168,33 +168,33 @@
 
 
                 <!-- Cover Upload -->
-<div>
-    <label class="block text-lg font-sans text-gray-800 mb-2">🖼️ Huidige omslag</label>
-    <img src="{{ asset('storage/' . $book->cover_image) }}" class="h-32 rounded-lg shadow mb-2 border border-indigo-200">
-    <label class="icon-btn add-btn add-btn-blue cursor-pointer">
-        <input type="file" name="cover_image" class="hidden" onchange="updateLabel(this, 'editCoverLabel')">
-        <div class="add-icon"></div>
-        <div class="btn-txt" id="editCoverLabel">Nieuwe afbeelding</div>
-    </label>
-</div>
+                <div>
+                    <label class="block text-lg font-sans text-gray-800 mb-2">🖼️ Huidige omslag</label>
+                    <img src="{{ asset('storage/' . $book->cover_image) }}" class="h-32 rounded-lg shadow mb-2 border border-indigo-200">
+                    <label class="icon-btn add-btn add-btn-blue cursor-pointer">
+                        <input type="file" name="cover_image" class="hidden" onchange="updateLabel(this, 'editCoverLabel')">
+                        <div class="add-icon"></div>
+                        <div class="btn-txt" id="editCoverLabel">Nieuwe afbeelding</div>
+                    </label>
+                </div>
 
-<!-- PDF Upload -->
-<div class="mt-4">
-    <label class="block text-lg font-sans text-gray-800 mb-2">📄 Huidige PDF</label>
-    <a href="{{ asset('storage/' . $book->pdf_file) }}" target="_blank" class="text-indigo-600 underline text-sm">📂 Bekijk PDF</a><br>
-    <label class="icon-btn add-btn add-btn-blue cursor-pointer mt-2">
-        <input type="file" name="pdf_file" class="hidden" onchange="updateLabel(this, 'editPdfLabel')">
-        <div class="add-icon"></div>
-        <div class="btn-txt" id="editPdfLabel">Nieuwe PDF</div>
-    </label>
-</div>
+                <!-- PDF Upload -->
+                <div class="mt-4">
+                    <label class="block text-lg font-sans text-gray-800 mb-2">📄 Huidige PDF</label>
+                    <a href="{{ asset('storage/' . $book->pdf_file) }}" target="_blank" class="text-indigo-600 underline text-sm">📂 Bekijk PDF</a><br>
+                    <label class="icon-btn add-btn add-btn-blue cursor-pointer mt-2">
+                        <input type="file" name="pdf_file" class="hidden" onchange="updateLabel(this, 'editPdfLabel')">
+                        <div class="add-icon"></div>
+                        <div class="btn-txt" id="editPdfLabel">Nieuwe PDF</div>
+                    </label>
+                </div>
 
 
                 <div>
                     <label class="flex items-center gap-2">
                         <input type="checkbox" name="is_special" value="1"
                             class="rounded text-indigo-600 transition" {{ $book->is_special ? 'checked' : '' }}>
-                        <span class="text-sm text-gray-700">✨ Markeer als speciaal boek</span>
+                        <span class="text-sm text-gray-700"> Markeer als speciaal boek</span>
                     </label>
                 </div>
 
